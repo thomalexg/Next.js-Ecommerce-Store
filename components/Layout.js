@@ -30,26 +30,44 @@ const headerStyles = css`
     margin-bottom: 0;
     padding-bottom: 0;
   }
+
+  @media (max-width: 900px) {
+    height: 5vh;
+    h1 {
+      display: none;
+    }
+  }
+  @media (max-height: 740px) {
+    height: 5vh;
+    h1 {
+      display: none;
+    }
+  }
 `;
 const container = css`
   width: 100%;
   /* height: 80vh; */
   background-color: black;
-  margin: auto;
+  margin: 0;
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(3, minmax(250px, 1fr));
   grid-column-gap: 100px;
   grid-row-gap: 100px;
   grid-template-rows: auto;
   margin: 0;
-  padding: 50px 100px 10px;
+  padding: 50px 100px 50px;
   .bikeImg {
     justify-self: center;
     /* margin-top: 50px; */
   }
-  @media (max-width: 400px) {
+  @media (max-width: 1800px) {
     padding: 50px 0;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 1250px) {
+    padding: 50px 0;
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 const foot = css`
