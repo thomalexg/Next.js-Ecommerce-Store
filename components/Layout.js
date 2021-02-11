@@ -6,11 +6,13 @@ import Link from 'next/link';
 const headerStyles = css`
   background-color: grey;
   width: 100%;
-  position: fixed;
-  height: 110px;
+  position: sticky;
+  /* height: 110px; */
+  min-height: 50px;
+  height: 15vh;
   top: 0;
   left: 0;
-
+  z-index: 1000;
   .gridCon {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -24,24 +26,37 @@ const headerStyles = css`
   .hd {
     text-align: center;
   }
+  h1 {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
 `;
 const container = css`
-  margin-top: 78px;
   width: 100%;
-  min-height: 1000px;
+  /* height: 80vh; */
   background-color: black;
+  margin: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
 
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-column-gap: 100px;
+  grid-row-gap: 100px;
+  grid-template-rows: auto;
+  margin: 0;
+  padding: 50px 100px 10px;
   .bikeImg {
-    z-index: 1000;
-    margin-top: 100px;
+    justify-self: center;
+    /* margin-top: 50px; */
+  }
+  @media (max-width: 400px) {
+    padding: 50px 0;
   }
 `;
 const foot = css`
-  position: fixed;
+  position: relative;
   bottom: 0;
-  height: 20px;
+  height: 5vh;
+
   background-color: teal;
   width: 100%;
 `;
