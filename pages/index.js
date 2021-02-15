@@ -104,49 +104,6 @@ export default function Home(props) {
           </div>
         </div>
       ))}
-
-      {/* <div className="bikeImg" css={newBike('/sd.jpg')}>
-        <div className="content">
-          <h1>The Dirt Jump Bike!</h1>
-          <p>You love the streets and dirt jumps?</p>
-          <button>Show me more</button>
-        </div>
-      </div>
-      <div className="bikeImg" css={newBike('/se.jpg')}>
-        <div className="content">
-          <h1>The Enduro Bike!</h1>
-          <p>Tour with the family or bikepark session? Both!</p>
-          <button>Show me more</button>
-        </div>
-      </div>
-      <div className="bikeImg" css={newBike('/sdh.jpg')}>
-        <div className="content">
-          <h1>The Downhill Bike!</h1>
-          <p>Are you ready for the bikepark? This bike sure is!</p>
-          <button>Show me more</button>
-        </div>
-      </div>
-      <div className="bikeImg" css={newBike('/cee.jpg')}>
-        <div className="content">
-          <h1>The E-Enduro!</h1>
-          <p>No lift on your local trails? This bike is your lift!</p>
-          <button>Show me more</button>
-        </div>
-      </div>
-      <div className="bikeImg" css={newBike('/se29.jpg')}>
-        <div className="content">
-          <h1>The Enduro Bike!</h1>
-          <p>Tour with the family or bikepark session? Both!</p>
-          <button>Show me more</button>
-        </div>
-      </div>
-      <div className="bikeImg" css={newBike('/see.jpg')}>
-        <div className="content">
-          <h1>The E-Enduro!</h1>
-          <p>No lift on your local trails? This bike is your lift!</p>
-          <button>Show me more</button>
-        </div>
-      </div> */}
     </Layout>
   );
 }

@@ -21,6 +21,9 @@ const headerStyles = css`
   .logo {
     justify-self: center;
   }
+  .logo_link:hover {
+    cursor: pointer;
+  }
   .scart {
     justify-self: end;
   }
@@ -95,7 +98,9 @@ export default function Layout(props) {
               <a>Login</a>
             </Link>
           </div>
-          <div className="logo">Send Bikes</div>
+          <Link className="logo_link" href="/">
+            <a className="logo">Send Bikes</a>
+          </Link>
           <div className="scart">
             <Image width="40" height="40" src="/scart.png" />
           </div>
