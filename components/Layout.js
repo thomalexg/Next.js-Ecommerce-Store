@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const headerStyles = css`
-  background-color: grey;
+  background-color: rgba(210, 215, 211, 1);
   width: 100%;
   position: sticky;
   /* height: 110px; */
@@ -12,10 +12,11 @@ const headerStyles = css`
   height: 15vh;
   top: 0;
   left: 0;
-  z-index: 1000;
+
   .gridCon {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    z-index: 10;
   }
   .logo {
     justify-self: center;
@@ -25,6 +26,7 @@ const headerStyles = css`
   }
   .hd {
     text-align: center;
+    z-index: 8;
   }
   h1 {
     margin-bottom: 0;
@@ -47,13 +49,13 @@ const headerStyles = css`
 const container = css`
   width: 100%;
   /* height: 80vh; */
-  background-color: black;
+  background-color: transparent;
   margin: 0;
   display: grid;
-
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
-  grid-column-gap: 100px;
-  grid-row-gap: 100px;
+  z-index: 9;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  grid-column-gap: 50px;
+  grid-row-gap: 40px;
   grid-template-rows: auto;
   margin: 0;
   padding: 50px 100px 50px;
@@ -65,7 +67,7 @@ const container = css`
     padding: 50px 0;
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 1250px) {
+  @media (max-width: 1507px) {
     padding: 50px 0;
     grid-template-columns: repeat(1, 1fr);
   }
