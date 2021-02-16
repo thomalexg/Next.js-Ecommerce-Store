@@ -3,16 +3,16 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 
-const bikeImg = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('/sd.jpg');
-  background-size: cover;
-  width: 500px;
-  height: auto;
-  background-position: center;
-`;
+// const bikeImg = css`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-image: url('/sd.jpg');
+//   background-size: cover;
+//   width: 500px;
+//   height: auto;
+//   background-position: center;
+// `;
 
 const newBike = function (image) {
   return css`
@@ -83,27 +83,55 @@ const newBike = function (image) {
     }
   `;
 };
+const container = css`
+  width: 100%;
+  /* height: 80vh; */
+  background-color: transparent;
+  margin: 0;
+  display: grid;
+  z-index: 9;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  grid-column-gap: 50px;
+  grid-row-gap: 40px;
+  grid-template-rows: auto;
+  margin: 0;
+  padding: 50px 100px 50px;
+  .bikeImg {
+    justify-self: center;
+    /* margin-top: 50px; */
+  }
+  @media (max-width: 1800px) {
+    padding: 50px 0;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 1507px) {
+    padding: 50px 0;
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
 export default function Home(props) {
   return (
     <Layout>
       <Head>
         <title>Send Bikes</title>
       </Head>
-      {props.products.map((product) => (
-        <div
-          key={product.id}
-          className="bikeImg"
-          css={newBike(product.img_head)}
-        >
-          <div className="content">
-            <h1>{product.title}</h1>
-            <p>{product.short_description}</p>
-            <Link href={`/${product.id}`}>
-              <button>Show me more</button>
-            </Link>
+      <div className="container" css={container}>
+        {props.products.map((product) => (
+          <div
+            key={product.id}
+            className="bikeImg"
+            css={newBike(product.img_head)}
+          >
+            <div className="content">
+              <h1>{product.title}</h1>
+              <p>{product.short_description}</p>
+              <Link href={`/${product.id}`}>
+                <button>Show me more</button>
+              </Link>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </Layout>
   );
 }

@@ -49,32 +49,7 @@ const headerStyles = css`
     }
   }
 `;
-const container = css`
-  width: 100%;
-  /* height: 80vh; */
-  background-color: transparent;
-  margin: 0;
-  display: grid;
-  z-index: 9;
-  grid-template-columns: repeat(2, minmax(250px, 1fr));
-  grid-column-gap: 50px;
-  grid-row-gap: 40px;
-  grid-template-rows: auto;
-  margin: 0;
-  padding: 50px 100px 50px;
-  .bikeImg {
-    justify-self: center;
-    /* margin-top: 50px; */
-  }
-  @media (max-width: 1800px) {
-    padding: 50px 0;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 1507px) {
-    padding: 50px 0;
-    grid-template-columns: repeat(1, 1fr);
-  }
-`;
+
 const foot = css`
   position: relative;
   bottom: 0;
@@ -109,9 +84,8 @@ export default function Layout(props) {
           <h1>Send bikes, a selection of the best bikes for you to send it!</h1>
         </div>
       </header>
-      <div className="container" css={container}>
-        {props.children}
-      </div>
+
+      {props.children}
 
       <footer css={foot}>
         <span>Send Bikes</span>{' '}
