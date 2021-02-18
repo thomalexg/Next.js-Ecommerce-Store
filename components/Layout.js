@@ -77,6 +77,7 @@ export default function Layout(props) {
             <a className="logo">Send Bikes</a>
           </Link>
           <div className="scart">
+            {/* <span>{Cookies.getJSON('cart') || 0}</span> */}
             <Image width="40" height="40" src="/scart.png" />
           </div>
         </div>
@@ -99,3 +100,15 @@ export default function Layout(props) {
     </>
   );
 }
+// export async function getServerSideProps(context) {
+//   const cart = context.req.cookies.cart;
+//   const cartValue = cart ? JSON.parse(cart) : [];
+
+//   const { getProducts } = await import('../util/database.js');
+
+//   const products = await getProducts();
+
+//   return {
+//     props: { cart: cartValue, products: products },
+//   };
+// }

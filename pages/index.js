@@ -55,19 +55,19 @@ const newBike = function (image) {
           padding-bottom: 1em;
           padding-top: 0.5em;
         }
-        button {
-          background-color: rgba(236, 240, 241, 0.5);
-          width: 30%;
-          height: 15%;
-          border-radius: 20px;
-          border: none;
-          outline: none;
-        }
-        button:hover {
-          background-color: rgba(103, 128, 159, 0.9);
-          cursor: pointer;
-        }
       }
+    }
+    a {
+      background-color: rgba(236, 240, 241, 0.5);
+      width: 30%;
+      height: 60px;
+      line-height: 55px;
+      border-radius: 20px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    a:hover {
+      background-color: rgba(103, 128, 159, 0.9);
     }
     @media (max-width: 760px) {
       width: 500px;
@@ -120,13 +120,13 @@ export default function Home(props) {
           <div
             key={product.id}
             className="bikeImg"
-            css={newBike(product.img_head)}
+            css={newBike(product.imgHead)}
           >
             <div className="content">
               <h1>{product.title}</h1>
-              <p>{product.short_description}</p>
+              <p>{product.shortDescription}</p>
               <Link href={`/${product.id}`}>
-                <button>Show me more</button>
+                <a>Show me more</a>
               </Link>
             </div>
           </div>
@@ -148,7 +148,7 @@ export async function getServerSideProps() {
   // ...can also be written as a dynamic import, like this:
   const { getProducts } = await import('../util/database.js');
 
-  const products = getProducts();
+  const products = await getProducts();
   return {
     props: {
       products: products,

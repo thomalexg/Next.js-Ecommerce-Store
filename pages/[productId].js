@@ -1,5 +1,8 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import Layout from '../components/Layout.js';
+import { addCookies } from '../util/cookies.js';
 
 const style = function (image) {
   return css`
@@ -48,28 +51,107 @@ const imagesdiv = css`
 `;
 
 export default function SingleProduct(props) {
+  const [itemNum, setItemNum] = useState(1);
+  if (!props.product) {
+    return (
+      <Layout>
+        <div>Not found</div>
+      </Layout>
+    );
+  }
+  useEffect(() => {
+    if (!Cookies.getJSON('cart')) {
+      Cookies.set('cart', []);
+    }
+  }, []);
   return (
     <Layout>
-      <div css={style(props.product.img_head)} className="container">
+      <div css={style(props.product.imgHead)} className="container">
         <div className="text" style={{ margin: '0', padding: '0' }}>
           <h1>{props.product.title}</h1>
-          {props.product.long_description.split('|').map((e, i) => (
+          {props.product.longDescription.split('|').map((e, i) => (
             <div key={i}>
               <p style={{ padding: '0', margin: '0' }}>{e}</p>
               <br />
             </div>
           ))}
-          <button>+</button>1<button>-</button>
-          <button>Add to cart</button>
+          <button onClick={() => (itemNum > 0 ? setItemNum(itemNum - 1) : '')}>
+            -
+          </button>
+          {itemNum}
+          <button
+            onClick={() => {
+              setItemNum(itemNum + 1);
+            }}
+          >
+            +
+          </button>
+          <pre>{JSON.stringify(Cookies.getJSON('cart'), null, 2)}</pre>
+          <button
+            onClick={() => {
+              Cookies.set('cart', addCookies(props.product.id, itemNum));
+              console.log(Cookies.getJSON('cart'));
+            }}
+            // Cookies.set(
+            //   'cart',
+            //   { id: props.product.id, quantity: itemNum },
+            //   { expires: 1 },
+            // )
+          >
+            Add to cart
+          </button>
         </div>
+
         <div className="headImg" />
       </div>
       <div css={imagesdiv}>
-        {props.images.map((img, i) => (
-          <img src={img} key={i} alt="some nice bike" />
+        {[...Array(props.product.imgNum + 1).keys()].slice(1).map((n) => (
+          <img
+            key={`${props.product.id}-${n}.jpg`}
+            src={`${props.product.id}-${n}.jpg`}
+            alt="details"
+          />
         ))}
       </div>
     </Layout>
+    // <Layout>
+    //   <div css={style(props.product.imgHead)} className="container">
+    //     <div className="text" style={{ margin: '0', padding: '0' }}>
+    //       <h1>{props.product.title}</h1>
+    //       {props.product.longDescription.split('|').map((e, i) => (
+    //         <div key={i}>
+    //           <p style={{ padding: '0', margin: '0' }}>{e}</p>
+    //           <br />
+    //         </div>
+    //       ))}
+    //       <button onClick={() => (itemNum > 0 ? setItemNum(itemNum - 1) : '') >-</button>
+    //       {itemNum}
+    //       <button onClick={() => setItemNum(itemNum + 1)}}>
+    //         +
+    //       </button>
+    //       <button onClick={() => console.log('set Cookies')}>
+    //         Add to cart
+    //       </button>
+    //     </div>
+    //     <div className="headImg" />
+    //   </div>
+    //   <div css={imagesdiv}>
+    //     {[...Array(props.product.imgNum + 1).keys()].slice(1).map((n) => (
+    //       <img
+    //         key={`${props.product.id}-${n}.jpg`}
+    //         src={`${props.product.id}-${n}.jpg`}
+    //         alt="details"
+    //       />
+    //     ))}
+    //     {/* {createImg(props.product.id, props.product.imgNum)} */}
+    //     {/* {for (const i=1; i<=props.product.imageNum;i++) {
+    //       <img key={`${props.product.id}-${i}`} src={`${props.product.id}-${i}`} alt="details"/>
+    //     }} */}
+    //     {/* {props.images.map((img, i) => (
+    //       <img src={img} key={i} alt="some nice bike" />
+    //     ))} */}
+    //   </div>
+    // </Layout>
   );
 }
 
@@ -81,21 +163,12 @@ export async function getServerSideProps(context) {
   // const products = getProducts;
   // const product = products.find((elem) => (elem.id = id));
 
-  const { getProducts } = await import('../util/database.js');
-  const products = getProducts();
-  const product = products.find((elem) => elem.id === id);
-  // const product = () => {
-  //   getProducts.forEach((element) => {
-  //     if (element.id === id) {
-  //       return element;
-  //     }
-  //   });
-  // };
+  const { getProduct } = await import('../util/database.js');
+  const product = await getProduct(id);
 
-  const { getImages1 } = await import('../util/databaseImage1');
-  const allImages = getImages1();
-  const images = allImages[id - 1];
+  // const product = products.find((elem) => elem.id === id);
+
   return {
-    props: { product: product, images: images },
+    props: { product: product || null },
   };
 }
