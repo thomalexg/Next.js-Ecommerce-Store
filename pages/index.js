@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 
 // const bikeImg = css`
@@ -109,9 +111,27 @@ const container = css`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
+// function cartNum() {
+//   if (Cookies.getJSON('cart')) {
+//     Cookies.getJSON('cart').reduce((a, v) => {
+//       return a.quantity + v.quantity;
+//     });
+//   } else {
+//     return 0;
+//   }
+// }
 export default function Home(props) {
+  const [cartNum, setCartNum] = useState(
+    Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
+      ? Cookies.getJSON('cart').reduce((a, v) => {
+          return a.quantity + v.quantity;
+        })
+      : 0,
+  );
+
   return (
-    <Layout>
+    <Layout cartNum={cartNum}>
       <Head>
         <title>Send Bikes</title>
       </Head>

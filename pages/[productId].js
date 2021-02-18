@@ -53,7 +53,7 @@ const imagesdiv = css`
 export default function SingleProduct(props) {
   const [itemNum, setItemNum] = useState(1);
   const [cartNum, setCartNum] = useState(
-    Cookies.getJSON('cart')
+    Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
       ? Cookies.getJSON('cart').reduce((a, v) => {
           return a.quantity + v.quantity;
         })
