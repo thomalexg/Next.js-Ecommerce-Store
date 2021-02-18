@@ -69,7 +69,7 @@ export default function Layout(props) {
       <header css={headerStyles}>
         <div className="gridCon">
           <div className="login">
-            <Link href="#">
+            <Link href="/">
               <a>Login</a>
             </Link>
           </div>
@@ -77,7 +77,20 @@ export default function Layout(props) {
             <a className="logo">Send Bikes</a>
           </Link>
           <div className="scart">
-            {/* <span>{Cookies.getJSON('cart') || 0}</span> */}
+            <span>
+              {/* {props.cart}
+              {props.cart
+                ? props.cart.reduce((a, v) => {
+                    return a.quantity + v.quantity;
+                  })
+                : 0} */}
+              {/* {Cookies.getJSON('cart')
+                ? Cookies.getJSON('cart').reduce((a, v) => {
+                    return a.quantity + v.quantity;
+                  })
+                : 0} */}
+              {props.cartNum}
+            </span>
             <Image width="40" height="40" src="/scart.png" />
           </div>
         </div>
@@ -90,10 +103,10 @@ export default function Layout(props) {
 
       <footer css={foot}>
         <span>Send Bikes</span>{' '}
-        <Link href="#">
+        <Link href="/">
           <a>About</a>
         </Link>{' '}
-        <Link href="#">
+        <Link href="/">
           <a>About</a>
         </Link>
       </footer>
@@ -101,14 +114,16 @@ export default function Layout(props) {
   );
 }
 // export async function getServerSideProps(context) {
-//   const cart = context.req.cookies.cart;
-//   const cartValue = cart ? JSON.parse(cart) : [];
+//   const getCart = context.req.cookies.cart;
+//   const cart = JSON.parse(getCart);
+//   console.log(getCart);
+//   console.log(cart);
 
-//   const { getProducts } = await import('../util/database.js');
+//   // const { getProducts } = await import('../util/database.js');
 
-//   const products = await getProducts();
+//   // const products = await getProducts();
 
 //   return {
-//     props: { cart: cartValue, products: products },
+//     props: { cart: cart },
 //   };
 // }

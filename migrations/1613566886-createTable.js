@@ -7,7 +7,8 @@ exports.up = async (sql) => {
 	short_description VARCHAR(300) NOT NULL,
 	long_description TEXT,
 	img_head TEXT,
-	img_num INT NOT NULL
+	img_num INT NOT NULL,
+	price INT
 );
 `;
 };

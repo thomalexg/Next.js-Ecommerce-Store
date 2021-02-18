@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-export function addCookies(productId, itemNum) {
+export function addCookies(productId, itemNum, price) {
   // Find if the teamMemberId matches any of the array elements
   const cookies = Cookies.getJSON('cart');
   const idInArray = cookies.some((product) => product.id === productId);
@@ -13,6 +13,7 @@ export function addCookies(productId, itemNum) {
       {
         id: productId,
         quantity: itemNum,
+        price: price,
       },
     ];
   }
@@ -25,9 +26,5 @@ export function addCookies(productId, itemNum) {
       item.quantity = itemNum + item.quantity;
     }
     return item;
-    // if (productId === item.id) {
-    //   return item.quantity + itemNum;
-    // }
-    // return cookies;
   });
 }
