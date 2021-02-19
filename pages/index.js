@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
 import Layout from '../components/Layout';
 
 // const bikeImg = css`
@@ -112,8 +110,8 @@ const container = css`
   }
 `;
 
-// function cartNum() {
-//   if (Cookies.getJSON('cart')) {
+// function cartNumFun() {
+//   if (Cookies.getJSON('cart') !== [] || Cookies.getJSON('cart')) {
 //     Cookies.getJSON('cart').reduce((a, v) => {
 //       return a.quantity + v.quantity;
 //     });
@@ -122,16 +120,17 @@ const container = css`
 //   }
 // }
 export default function Home(props) {
-  const [cartNum, setCartNum] = useState(
-    Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
-      ? Cookies.getJSON('cart').reduce((a, v) => {
-          return a.quantity + v.quantity;
-        })
-      : 0,
-  );
+  // const [cartNum, setCartNum] = useState(cartNumFun());
+  // const [cartNum, setCartNum] = useState(
+  //   Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
+  //     ? Cookies.getJSON('cart').reduce((a, v) => {
+  //         return a.quantity + v.quantity;
+  //       })
+  //     : 0,
+  // );
 
   return (
-    <Layout cartNum={cartNum}>
+    <Layout cartNum={props.cartNum}>
       <Head>
         <title>Send Bikes</title>
       </Head>

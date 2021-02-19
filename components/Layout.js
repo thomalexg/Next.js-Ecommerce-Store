@@ -60,6 +60,7 @@ const foot = css`
 `;
 
 export default function Layout(props) {
+  console.log(props.cartNum);
   return (
     <>
       <Head>
@@ -78,18 +79,18 @@ export default function Layout(props) {
           </Link>
           <div className="scart">
             <span>
+              {props.cartNum}
               {/* {props.cart}
               {props.cart
                 ? props.cart.reduce((a, v) => {
                     return a.quantity + v.quantity;
                   })
                 : 0} */}
-              {/* {Cookies.getJSON('cart')
+              {/* {Cookies.getJSON('cart').length > 0 || Cookies.getJSON('cart')
                 ? Cookies.getJSON('cart').reduce((a, v) => {
                     return a.quantity + v.quantity;
                   })
                 : 0} */}
-              {props.cartNum}
             </span>
             <Image width="40" height="40" src="/scart.png" />
           </div>

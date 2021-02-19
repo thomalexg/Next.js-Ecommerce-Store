@@ -69,6 +69,26 @@ const products = [
   },
 ];
 
+function sizeArr() {
+  const arr = [];
+  const sizes = ['S', 'M', 'L', 'XL'];
+  for (let i = 1; i <= 6; i++) {
+    for (let q = 0; q <= 3; q++) {
+      arr.push({ product_id: i, size: sizes[q] });
+    }
+  }
+  return arr;
+}
+const sizes = sizeArr();
+
+function stockArr() {
+  let arr = [];
+  for (let i = 1; i <= 6; i++) {
+    arr.push({ size_id: i, stock: 10 });
+  }
+  return arr;
+}
+const stock = stockArr();
 exports.up = async (sql) => {
   await sql`
 	INSERT INTO products ${sql(
@@ -82,9 +102,23 @@ exports.up = async (sql) => {
     'price',
   )}
 	`;
+  await sql`
+  INSERT INTO product_size ${sql(sizes, 'product_id', 'size')}
+  `;
+  await sql`
+   INSERT INTO product_stock ${sql(stock, 'size_id', 'stock')}
+   `;
 };
 
 exports.down = async (sql) => {
+  await sql`
+      DELETE FROM
+       product_size
+    `;
+  await sql`
+    DELETE FROM
+     product_stock
+  `;
   await sql`
       DELETE FROM
        products

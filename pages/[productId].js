@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout.js';
 import { addCookies } from '../util/cookies.js';
@@ -42,37 +43,47 @@ const imagesdiv = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  img {
-    margin: 10px 0;
-    height: 300px;
-    width: auto;
+  .img {
+    margin: 10px 0 !important;
+    /* height: 300px;
+    width: auto; */
     /* object-fit: cover; */
   }
 `;
-
+// function cartNumFun() {
+//   if (Cookies.getJSON('cart') !== [] || Cookies.getJSON('cart')) {
+//     Cookies.getJSON('cart').reduce((a, v) => {
+//       return a.quantity + v.quantity;
+//     });
+//   } else {
+//     return 0;
+//   }
+// }
 export default function SingleProduct(props) {
   const [itemNum, setItemNum] = useState(1);
-  const [cartNum, setCartNum] = useState(
-    Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
-      ? Cookies.getJSON('cart').reduce((a, v) => {
-          return a.quantity + v.quantity;
-        })
-      : 0,
-  );
-  if (!props.product) {
-    return (
-      <Layout>
-        <div>Not found</div>
-      </Layout>
-    );
-  }
+  // const [cartNum, setCartNum] = useState(0);
+  // const [cartNum, setCartNum] = useState(0);
+  // if (!props.product) {
+  //   return (
+  //     <Layout>
+  //       <div>Not found</div>
+  //     </Layout>
+  //   );
+  // }
   useEffect(() => {
     if (!Cookies.getJSON('cart')) {
       Cookies.set('cart', []);
     }
+    // const cNum =
+    //   Cookies.getJSON('cart').length > 0 || Cookies.getJSON('cart')
+    //     ? Cookies.getJSON('cart').reduce((a, v) => {
+    //         return a.quantity + v.quantity;
+    //       }, 0)
+    //     : 0;
+    // setCartNum(cNum);
   }, []);
   return (
-    <Layout cartNum={cartNum}>
+    <Layout cartNum={props.cartNum}>
       <div css={style(props.product.imgHead)} className="container">
         <div className="text" style={{ margin: '0', padding: '0' }}>
           <h1>{props.product.title}</h1>
@@ -102,8 +113,10 @@ export default function SingleProduct(props) {
                 'cart',
                 addCookies(props.product.id, itemNum, props.product.price),
               );
-              setCartNum(cartNum + itemNum);
+              props.setCartNum(props.cartNum + itemNum);
+
               console.log(Cookies.getJSON('cart'));
+              console.log(props.cartNum);
             }}
           >
             Add to cart
@@ -114,11 +127,18 @@ export default function SingleProduct(props) {
       </div>
       <div css={imagesdiv}>
         {[...Array(props.product.imgNum + 1).keys()].slice(1).map((n) => (
-          <img
+          <Image
+            className="img"
+            src={`/${props.product.id}-${n}.jpg`}
             key={`${props.product.id}-${n}.jpg`}
-            src={`${props.product.id}-${n}.jpg`}
-            alt="details"
+            width={449.89}
+            height={300}
           />
+          // <img
+          //   key={`${props.product.id}-${n}.jpg`}
+          //   src={`${props.product.id}-${n}.jpg`}
+          //   alt="details"
+          // />
         ))}
       </div>
     </Layout>
