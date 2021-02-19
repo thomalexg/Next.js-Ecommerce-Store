@@ -65,10 +65,12 @@ const style = css`
   }
 `;
 
-export default function Cart() {
+export default function Cart(props) {
   return (
     <div css={style} className="container-fluid mt-5">
+      <h1>{props.cartNum}</h1>
       <h2 className="mb-5 text-center">Shopping Cart</h2>
+
       <div className="row justify-content-center">
         <div className="col-md-8">
           <div className="table-responsive">
@@ -87,194 +89,62 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <div className="product-img">
-                      <div className="img-prdct">
-                        <img src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg" />
+                {props.cookies.map((e) => (
+                  <tr key={e.id}>
+                    <td>
+                      <div className="product-img">
+                        <div className="img-prdct">
+                          <img
+                            alt="#"
+                            src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p>Product One</p>
-                  </td>
-                  <td>
-                    <div className="button-container">
-                      <button className="cart-qty-plus" type="button" value="+">
-                        +
-                      </button>
+                    </td>
+                    <td>
+                      <p>Product One</p>
+                    </td>
+                    <td>
+                      <div className="button-container">
+                        <button
+                          className="cart-qty-plus"
+                          type="button"
+                          value="+"
+                        >
+                          +
+                        </button>
+                        <input
+                          type="text"
+                          name="qty"
+                          min={0}
+                          className="qty form-control"
+                          defaultValue={0}
+                        />
+                        <button
+                          className="cart-qty-minus"
+                          type="button"
+                          value="-"
+                        >
+                          -
+                        </button>
+                      </div>
+                    </td>
+                    <td>
                       <input
                         type="text"
-                        name="qty"
-                        min={0}
-                        className="qty form-control"
-                        defaultValue={0}
+                        defaultValue={e.price}
+                        className="price form-control"
+                        disabled
                       />
-                      <button
-                        className="cart-qty-minus"
-                        type="button"
-                        value="-"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      defaultValue={72}
-                      className="price form-control"
-                      disabled
-                    />
-                  </td>
-                  <td align="right">
-                    ${' '}
-                    <span id="amount" className="amount">
-                      0
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="product-img">
-                      <div className="img-prdct">
-                        <img src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg" />
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p>Product Two</p>
-                  </td>
-                  <td>
-                    <div className="button-container">
-                      <button className="cart-qty-plus" type="button" value="+">
-                        +
-                      </button>
-                      <input
-                        type="text"
-                        name="qty"
-                        min={0}
-                        className="qty form-control"
-                        defaultValue={0}
-                      />
-                      <button
-                        className="cart-qty-minus"
-                        type="button"
-                        value="-"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      defaultValue={125}
-                      className="price form-control"
-                      disabled
-                    />
-                  </td>
-                  <td align="right">
-                    ${' '}
-                    <span id="amount" className="amount">
-                      0
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="product-img">
-                      <div className="img-prdct">
-                        <img src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg" />
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p>Product Three</p>
-                  </td>
-                  <td>
-                    <div className="button-container">
-                      <button className="cart-qty-plus" type="button" value="+">
-                        +
-                      </button>
-                      <input
-                        type="text"
-                        name="qty"
-                        min={0}
-                        className="qty form-control"
-                        defaultValue={0}
-                      />
-                      <button
-                        className="cart-qty-minus"
-                        type="button"
-                        value="-"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      defaultValue={250}
-                      className="price form-control"
-                      disabled
-                    />
-                  </td>
-                  <td align="right">
-                    ${' '}
-                    <span id="amount" className="amount">
-                      0
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="product-img">
-                      <div className="img-prdct">
-                        <img src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg" />
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p>Product Four</p>
-                  </td>
-                  <td>
-                    <div className="button-container">
-                      <button className="cart-qty-plus" type="button" value="+">
-                        +
-                      </button>
-                      <input
-                        type="text"
-                        name="qty"
-                        min={0}
-                        className="qty form-control"
-                        defaultValue={0}
-                      />
-                      <button
-                        className="cart-qty-minus"
-                        type="button"
-                        value="-"
-                      >
-                        -
-                      </button>
-                    </div>
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      defaultValue={300}
-                      className="price form-control"
-                      disabled
-                    />
-                  </td>
-                  <td align="right">
-                    ${' '}
-                    <span id="amount" className="amount">
-                      0
-                    </span>
-                  </td>
-                </tr>
+                    </td>
+                    <td align="right">
+                      €{' '}
+                      <span id="amount" className="amount">
+                        {e.quantity * e.price}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
               <tfoot>
                 <tr>
@@ -295,4 +165,20 @@ export default function Cart() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  // const { getBikesByCart } = await import('../util/database.js');
+  const getCookies = context.req.cookies.cart;
+  // console.log(JSON.parse(getCookies)[0]);
+  // const cookies = getCookies.map((e) => JSON.parse(e));
+  const cookies = JSON.parse(getCookies);
+  console.log(cookies);
+  console.log(typeof cookies.price);
+  // const idArr = cookies.map((e) => e.id);
+  // const getBikes = JSON.parse(getBikesByCart(idArr));
+
+  return {
+    props: { cookies: cookies },
+  };
 }

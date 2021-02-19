@@ -40,3 +40,14 @@ export async function getProduct(productId) {
   `;
   return camelcaseRecords(product)[0];
 }
+export async function getBikesByCart(idArr) {
+  const arr = [];
+  await idArr.forEach(async (e) =>
+    arr.push(
+      await sql`
+SELECT title, img_head, price FROM products WHERE id = ${e}
+`,
+    ),
+  );
+  return arr;
+}
