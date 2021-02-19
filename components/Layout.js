@@ -35,6 +35,9 @@ const headerStyles = css`
     margin-bottom: 0;
     padding-bottom: 0;
   }
+  .scartIcon:hover {
+    cursor: pointer;
+  }
 
   @media (max-width: 900px) {
     height: 5vh;
@@ -78,21 +81,17 @@ export default function Layout(props) {
             <a className="logo">Send Bikes</a>
           </Link>
           <div className="scart">
-            <span>
-              {props.cartNum}
-              {/* {props.cart}
-              {props.cart
-                ? props.cart.reduce((a, v) => {
-                    return a.quantity + v.quantity;
-                  })
-                : 0} */}
-              {/* {Cookies.getJSON('cart').length > 0 || Cookies.getJSON('cart')
-                ? Cookies.getJSON('cart').reduce((a, v) => {
-                    return a.quantity + v.quantity;
-                  })
-                : 0} */}
-            </span>
-            <Image width="40" height="40" src="/scart.png" />
+            <Link href="/cart">
+              <a>{props.cartNum}</a>
+            </Link>
+            <Link href="/cart">
+              <Image
+                className="scartIcon"
+                width="40"
+                height="40"
+                src="/scart.png"
+              />
+            </Link>
           </div>
         </div>
         <div className="hd">
