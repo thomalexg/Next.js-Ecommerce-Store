@@ -1,4 +1,6 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
+import { addQuantity, subQuantity } from '../util/cookies.js';
 
 const style = css`
   body {
@@ -65,7 +67,12 @@ const style = css`
   }
 `;
 
+function bikeById(bikes, idFromArr) {
+  const bike = bikes.find((e) => e.id === idFromArr);
+}
+
 export default function Cart(props) {
+  // const [quantity, setQuantity] = useState(props.cookies.quantity);
   return (
     <div css={style} className="container-fluid mt-5">
       <h1>{props.cartNum}</h1>
@@ -89,20 +96,17 @@ export default function Cart(props) {
                 </tr>
               </thead>
               <tbody>
-                {props.cookies.map((e) => (
+                {props.cookies.map((e, i) => (
                   <tr key={e.id}>
                     <td>
                       <div className="product-img">
                         <div className="img-prdct">
-                          <img
-                            alt="#"
-                            src="https://www.pos-agent.com/app_v2/assets/upload/product/product_892_20180823125535.jpg"
-                          />
+                          <img alt="#" src={`${props.bikes[i].imgHead}`} />
                         </div>
                       </div>
                     </td>
                     <td>
-                      <p>Product One</p>
+                      <p>{props.bikes[i].title}</p>
                     </td>
                     <td>
                       <div className="button-container">
@@ -110,6 +114,15 @@ export default function Cart(props) {
                           className="cart-qty-plus"
                           type="button"
                           value="+"
+                          onClick={() => {
+                            // console.log(
+                            //   addCookies(props.bikes[i].id, e.quantity),
+                            // );
+                            Cookies.set(
+                              'cart',
+                              addQuantity(props.bikes[i].id, e.quantity),
+                            );
+                          }}
                         >
                           +
                         </button>
@@ -118,12 +131,18 @@ export default function Cart(props) {
                           name="qty"
                           min={0}
                           className="qty form-control"
-                          defaultValue={0}
+                          defaultValue={e.quantity}
                         />
                         <button
                           className="cart-qty-minus"
                           type="button"
                           value="-"
+                          onClick={() => {
+                            Cookies.set(
+                              'cart',
+                              subQuantity(props.bikes[i].id, e.quantity),
+                            );
+                          }}
                         >
                           -
                         </button>
@@ -132,7 +151,7 @@ export default function Cart(props) {
                     <td>
                       <input
                         type="text"
-                        defaultValue={e.price}
+                        defaultValue={props.bikes[i].price}
                         className="price form-control"
                         disabled
                       />
@@ -140,7 +159,7 @@ export default function Cart(props) {
                     <td align="right">
                       €{' '}
                       <span id="amount" className="amount">
-                        {e.quantity * e.price}
+                        {e.quantity * props.bikes[i].price}
                       </span>
                     </td>
                   </tr>
@@ -168,17 +187,21 @@ export default function Cart(props) {
 }
 
 export async function getServerSideProps(context) {
-  // const { getBikesByCart } = await import('../util/database.js');
+  const { getProduct } = await import('../util/database.js');
   const getCookies = context.req.cookies.cart;
   // console.log(JSON.parse(getCookies)[0]);
   // const cookies = getCookies.map((e) => JSON.parse(e));
   const cookies = JSON.parse(getCookies);
   console.log(cookies);
   console.log(typeof cookies.price);
-  // const idArr = cookies.map((e) => e.id);
-  // const getBikes = JSON.parse(getBikesByCart(idArr));
+  const idArr = cookies.map((e) => e.id);
+  console.log(idArr);
+  // const getBikes = await idArr.map(async (e) => await getBikesByCart(e));
+  // console.log(getBikes);
+  const getBikes = idArr.map((id) => getProduct(id));
+  const bikes = await Promise.all(getBikes);
 
   return {
-    props: { cookies: cookies },
+    props: { cookies: cookies, bikes: bikes },
   };
 }

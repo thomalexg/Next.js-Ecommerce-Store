@@ -109,10 +109,7 @@ export default function SingleProduct(props) {
 
           <button
             onClick={() => {
-              Cookies.set(
-                'cart',
-                addCookies(props.product.id, itemNum, props.product.price),
-              );
+              Cookies.set('cart', addCookies(props.product.id, itemNum));
               props.setCartNum(props.cartNum + itemNum);
 
               console.log(Cookies.getJSON('cart'));
