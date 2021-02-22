@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
-import { addQuantity, subQuantity } from '../util/cookies.js';
+import { useState } from 'react';
+import { addQuantity, changeQuantity, subQuantity } from '../util/cookies.js';
 
 const style = css`
   body {
@@ -72,7 +73,15 @@ function bikeById(bikes, idFromArr) {
 }
 
 export default function Cart(props) {
-  // const [quantity, setQuantity] = useState(props.cookies.quantity);
+  const [quantity, setQuantity] = useState(props.cookies ? props.cookies : []);
+  // const [clicked, setClicked] = useState(false);
+
+  // useEffect(() => {
+  //   if (clicked) {
+  //     setQuantity(props.cookies);
+  //     setClicked(false);
+  //   }
+  // }, [clicked, setClicked, props.cookies]);
   return (
     <div css={style} className="container-fluid mt-5">
       <h1>{props.cartNum}</h1>
@@ -96,7 +105,7 @@ export default function Cart(props) {
                 </tr>
               </thead>
               <tbody>
-                {props.cookies.map((e, i) => (
+                {quantity.map((e, i) => (
                   <tr key={e.id}>
                     <td>
                       <div className="product-img">
@@ -118,10 +127,12 @@ export default function Cart(props) {
                             // console.log(
                             //   addCookies(props.bikes[i].id, e.quantity),
                             // );
-                            Cookies.set(
-                              'cart',
-                              addQuantity(props.bikes[i].id, e.quantity),
+                            const newQuantity = addQuantity(
+                              props.bikes[i].id,
+                              e.quantity,
                             );
+                            Cookies.set('cart', newQuantity);
+                            setQuantity(newQuantity);
                           }}
                         >
                           +
@@ -131,17 +142,27 @@ export default function Cart(props) {
                           name="qty"
                           min={0}
                           className="qty form-control"
-                          defaultValue={e.quantity}
+                          defaultValue={quantity[i].quantity}
+                          onChange={(event) => {
+                            const newQuantity = changeQuantity(
+                              props.bikes[i].id,
+                              event.target.value,
+                            );
+                            Cookies.set('cart', newQuantity);
+                            setQuantity(newQuantity);
+                          }}
                         />
                         <button
                           className="cart-qty-minus"
                           type="button"
                           value="-"
                           onClick={() => {
-                            Cookies.set(
-                              'cart',
-                              subQuantity(props.bikes[i].id, e.quantity),
+                            const newQuantity = subQuantity(
+                              props.bikes[i].id,
+                              e.quantity,
                             );
+                            Cookies.set('cart', newQuantity);
+                            setQuantity(newQuantity);
                           }}
                         >
                           -
@@ -193,7 +214,7 @@ export async function getServerSideProps(context) {
   // const cookies = getCookies.map((e) => JSON.parse(e));
   const cookies = JSON.parse(getCookies);
   console.log(cookies);
-  console.log(typeof cookies.price);
+  console.log(typeof cookies.quantity);
   const idArr = cookies.map((e) => e.id);
   console.log(idArr);
   // const getBikes = await idArr.map(async (e) => await getBikesByCart(e));
