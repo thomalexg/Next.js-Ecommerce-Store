@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import Link from 'next/link';
 //@import url('https://fonts.googleapis.com/css?family=Arimo');
 const style = css`
   $coral: #eb9478;
@@ -197,11 +198,12 @@ const style = css`
 `;
 
 export default function Checkout() {
+  if (props)
   return (
     <div>
       <div css={style} className="wrapper">
         <div className="container">
-          <form action>
+          <form action="/thankyou">
             <h1>
               <i className="fas fa-shipping-fast" />
               Shipping Details
@@ -209,29 +211,29 @@ export default function Checkout() {
             <div className="name">
               <div>
                 <label htmlFor="f-name">First</label>
-                <input type="text" name="f-name" />
+                <input type="text" name="f-name" required />
               </div>
               <div>
                 <label htmlFor="l-name">Last</label>
-                <input type="text" name="l-name" />
+                <input type="text" name="l-name" required />
               </div>
             </div>
             <div className="street">
               <label htmlFor="name">Street</label>
-              <input type="text" name="address" />
+              <input type="text" name="address" required />
             </div>
             <div className="address-info">
               <div>
                 <label htmlFor="city">City</label>
-                <input type="text" name="city" />
+                <input type="text" name="city" required />
               </div>
               <div>
                 <label htmlFor="state">State</label>
-                <input type="text" name="state" />
+                <input type="text" name="state" required />
               </div>
               <div>
                 <label htmlFor="zip">Zip</label>
-                <input type="text" name="zip" />
+                <input type="text" name="zip" required />
               </div>
             </div>
             <h1>
@@ -239,21 +241,21 @@ export default function Checkout() {
             </h1>
             <div className="cc-num">
               <label htmlFor="card-num">Credit Card No.</label>
-              <input type="text" name="card-num" />
+              <input type="text" name="card-num" required />
             </div>
             <div className="cc-info">
               <div>
                 <label htmlFor="card-num">Exp</label>
-                <input type="text" name="expire" />
+                <input type="text" name="expire" required />
               </div>
               <div>
                 <label htmlFor="card-num">CCV</label>
-                <input type="text" name="security" />
+                <input type="text" name="security" required />
               </div>
             </div>
             <div className="btns">
               <button>Purchase</button>
-              <button>Back to cart</button>
+              <Link href="/cart">Back to cart</Link>
             </div>
           </form>
         </div>

@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }) {
         }).quantity
       : 0,
   );
+
   useEffect(() => {
     if (!Cookies.getJSON('cart')) {
       Cookies.set('cart', []);
