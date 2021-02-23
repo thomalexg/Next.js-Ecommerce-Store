@@ -170,7 +170,9 @@ export default function Cart(props) {
                             name="qty"
                             min={0}
                             className="qty form-control"
-                            defaultValue={quantity[i].quantity}
+                            // defaultValue={quantity[i].quantity}
+                            defaultValue={e.quantity}
+                            value={e.quantity}
                             onChange={(event) => {
                               const newQuantity = changeQuantity(
                                 props.bikes[i].id,
@@ -198,7 +200,7 @@ export default function Cart(props) {
                                 const newQuantity = deleteProduct(i);
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
-                                props.setCartNum(0);
+                                props.setCartNum(props.cartNum - 1);
                               }
                             }}
                           >
