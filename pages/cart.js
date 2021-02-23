@@ -76,13 +76,10 @@ const style = css`
   }
 `;
 
-function bikeById(bikes, idFromArr) {
-  const bike = bikes.find((e) => e.id === idFromArr);
-}
-
 export default function Cart(props) {
   // const [quantity, setQuantity] = useState(props.cookies ? props.cookies : []);
   const [quantity, setQuantity] = useState(props.cookies);
+  console.log(quantity);
   // const [clicked, setClicked] = useState(false);
 
   // useEffect(() => {
@@ -93,14 +90,7 @@ export default function Cart(props) {
   // }, [clicked, setClicked, props.cookies]);
   if (quantity.length === 0 || !quantity) {
     return (
-      <Layout
-        cartNum={
-          quantity.reduce((a, v) => {
-            const newCount = a.quantity + v.quantity;
-            return { quantity: newCount };
-          }).quantity
-        }
-      >
+      <Layout cartNum="0">
         <div>
           <div>No items in shopping cart!</div>
           <Link href="/">Back to shop</Link>
@@ -110,9 +100,10 @@ export default function Cart(props) {
   }
   return (
     <Layout
-      cartNum={quantity.reduce((a, v) => {
-        return a.quantity + v.quantity;
-      })}
+      cartNum={props.cartNum}
+      // cartNum={quantity.reduce((a, v) => {
+      //   return a.quantity + v.quantity;
+      // })}
     >
       <div css={style} className="container-fluid mt-5">
         <h2 className="mb-5 text-center">Shopping Cart</h2>
@@ -169,6 +160,7 @@ export default function Cart(props) {
                               );
                               Cookies.set('cart', newQuantity);
                               setQuantity(newQuantity);
+                              props.setCartNum(props.cartNum + 1);
                             }}
                           >
                             +
@@ -186,6 +178,7 @@ export default function Cart(props) {
                               );
                               Cookies.set('cart', newQuantity);
                               setQuantity(newQuantity);
+                              props.setCartNum(event.target.value);
                             }}
                           />
                           <button
@@ -200,10 +193,12 @@ export default function Cart(props) {
                                 );
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
+                                props.setCartNum(props.cartNum - 1);
                               } else {
                                 const newQuantity = deleteProduct(i);
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
+                                props.setCartNum(0);
                               }
                             }}
                           >

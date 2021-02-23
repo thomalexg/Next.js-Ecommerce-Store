@@ -63,7 +63,7 @@ const foot = css`
 `;
 
 export default function Layout(props) {
-  console.log(props.cartNum);
+  // console.log(props.cartNum);
   return (
     <>
       <Head>

@@ -168,6 +168,7 @@ export async function getServerSideProps() {
   const { getProducts } = await import('../util/database.js');
 
   const products = await getProducts();
+  console.log('products', products);
   return {
     props: {
       products: products,

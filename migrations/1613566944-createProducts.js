@@ -112,13 +112,13 @@ exports.up = async (sql) => {
 
 exports.down = async (sql) => {
   await sql`
-      DELETE FROM
-       product_size
-    `;
-  await sql`
     DELETE FROM
      product_stock
   `;
+  await sql`
+      DELETE FROM
+       product_size
+    `;
   await sql`
       DELETE FROM
        products

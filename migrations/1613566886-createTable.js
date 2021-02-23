@@ -32,12 +32,12 @@ exports.up = async (sql) => {
 
 exports.down = async (sql) => {
   await sql`
-  DROP TABLE product_size
-  `;
-  await sql`
-   DROP TABLE product_stock
+   DROP TABLE IF EXISTS product_stock
    `;
   await sql`
-	DROP TABLE products
+  DROP TABLE IF EXISTS  product_size
+  `;
+  await sql`
+	DROP TABLE IF EXISTS products
 	`;
 };
