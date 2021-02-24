@@ -16,7 +16,8 @@ exports.up = async (sql) => {
   	CREATE TABLE IF NOT EXISTS product_size (
   		id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   	product_id integer references products(id),
-  	size VARCHAR(10) NOT NULL
+  	size VARCHAR(10) NOT NULL,
+		stock INTEGER
   );
   `;
 
@@ -26,11 +27,19 @@ exports.up = async (sql) => {
   	size_id integer references product_size(id),
   	stock INTEGER
   );
-
   `;
+
+  await sql`
+	CREATE TABLE orders (
+		id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+	);
+	`;
 };
 
 exports.down = async (sql) => {
+  await sql`
+   DROP TABLE IF EXISTS orders
+   `;
   await sql`
    DROP TABLE IF EXISTS product_stock
    `;

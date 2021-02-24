@@ -47,6 +47,38 @@ UPDATE products SET quantity = ${quantity} WHERE id = ${productId}
 RETURNING *
 `;
 }
+
+//getting size and stock
+export async function getSizeStock(productId) {
+  const product = await sql`
+SELECT
+  p.id as id,
+  s.size as size,
+  st.stock as stock
+FROM
+  products as p,
+  product_size as s,
+  product_stock as st
+WHERE
+  p.id = s.product_id AND
+  s.id = st.size_id AND
+  p.id = ${productId}
+`;
+  return product;
+}
+// export async function getSizeStock(productId) {
+//   const product = await sql`
+// SELECT s.size as size, s.stock as stock, p.id as id FROM products as p INNER JOIN product_size as s ON p.id = s.product_id WHERE p.id = ${productId}
+// `;
+//   return product;
+// }
+// inserting new orders on checkout to orders table
+// export async function addOrder(oderArr) {
+//   const product = await sql`
+// UPDATE products SET quantity = ${quantity} WHERE id = ${productId}
+// RETURNING *
+// `;
+// }
 // export async function deleteProduct(productId, quantity) {
 //   const product = await sql`
 // UPDATE products SET quantity = ${quantity} WHERE id = ${productId}

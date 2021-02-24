@@ -197,8 +197,15 @@ const style = css`
   }
 `;
 
-export default function Checkout() {
-  if (props)
+export default function Checkout(props) {
+  if (props.cookies?.length === 0) {
+    return (
+      <div>
+        <div>Nada en la shopping carta!</div>
+        <Link href="/"> Back Home!</Link>
+      </div>
+    );
+  }
   return (
     <div>
       <div css={style} className="wrapper">
@@ -262,4 +269,15 @@ export default function Checkout() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const getCookies = context.req.cookies.cart;
+
+  const cookies = getCookies ? JSON.parse(getCookies) : [];
+  console.log(cookies);
+
+  return {
+    props: { cookies: cookies },
+  };
 }

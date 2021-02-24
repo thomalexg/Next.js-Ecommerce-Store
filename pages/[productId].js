@@ -61,6 +61,10 @@ const imagesdiv = css`
 // }
 export default function SingleProduct(props) {
   const [itemNum, setItemNum] = useState(1);
+  const [size, setSize] = useState(props.sizeStock[0] || {});
+
+  console.log(size);
+
   // const [cartNum, setCartNum] = useState(0);
   // const [cartNum, setCartNum] = useState(0);
   // if (!props.product) {
@@ -70,6 +74,7 @@ export default function SingleProduct(props) {
   //     </Layout>
   //   );
   // }
+
   useEffect(() => {
     if (!Cookies.getJSON('cart')) {
       Cookies.set('cart', []);
@@ -94,14 +99,41 @@ export default function SingleProduct(props) {
             </div>
           ))}
           <p>Price: € {props.product.price}</p>
-
+          <form action="/action_page.php">
+            <label htmlFor="size">Choose a size:</label>
+            <select
+              id="size"
+              name="size"
+              onChange={(e) => {
+                console.log(e.target.value);
+                setSize(
+                  props.sizeStock.find(
+                    (sizeObj) => sizeObj.size === e.target.value,
+                  ),
+                );
+              }}
+            >
+              {props.sizeStock.map((e, i) => (
+                <option key={i} value={e.size}>
+                  {' '}
+                  {`${e.size}, stock: ${e.stock}`}
+                </option>
+              ))}
+              {/* <option value="saab">Saab</option>
+             <option value="fiat">Fiat</option>
+             <option value="audi">Audi</option> */}
+            </select>
+          </form>
           <button onClick={() => (itemNum > 0 ? setItemNum(itemNum - 1) : '')}>
             -
           </button>
           {itemNum}
           <button
             onClick={() => {
-              setItemNum(itemNum + 1);
+              console.log(size);
+              if (itemNum < size.stock) {
+                setItemNum(itemNum + 1);
+              }
             }}
           >
             +
@@ -152,10 +184,12 @@ export async function getServerSideProps(context) {
 
   const { getProduct } = await import('../util/database.js');
   const product = await getProduct(id);
-
+  const { getSizeStock } = await import('../util/database.js');
+  const sizeStock = await getSizeStock(id);
+  console.log(sizeStock);
   // const product = products.find((elem) => elem.id === id);
 
   return {
-    props: { product: product || null },
+    props: { product: product || null, sizeStock: sizeStock || null },
   };
 }

@@ -271,7 +271,7 @@ export async function getServerSideProps(context) {
   const getCookies = context.req.cookies.cart;
   // console.log(JSON.parse(getCookies)[0]);
   // const cookies = getCookies.map((e) => JSON.parse(e));
-  const cookies = JSON.parse(getCookies);
+  const cookies = getCookies ? JSON.parse(getCookies) : [];
   console.log(cookies);
   console.log(typeof cookies.quantity);
   const idArr = cookies.map((e) => e.id);
