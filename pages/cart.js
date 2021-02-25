@@ -79,7 +79,7 @@ const style = css`
 export default function Cart(props) {
   // const [quantity, setQuantity] = useState(props.cookies ? props.cookies : []);
   const [quantity, setQuantity] = useState(props.cookies);
-  console.log(quantity);
+  // console.log(quantity);
   // const [clicked, setClicked] = useState(false);
 
   // useEffect(() => {
@@ -116,6 +116,7 @@ export default function Cart(props) {
                   <tr>
                     <th>Product</th>
                     <th>Name</th>
+                    <th>Size</th>
                     <th>Qty</th>
                     <th>Price</th>
                     <th className="text-right">
@@ -143,6 +144,9 @@ export default function Cart(props) {
                       </td>
                       <td>
                         <p>{props.bikes[i].title}</p>
+                      </td>
+                      <td>
+                        <p>{props.bikes[i].size}</p>
                       </td>
                       <td>
                         <div className="button-container">
@@ -267,21 +271,23 @@ export default function Cart(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { getProduct } = await import('../util/database.js');
+  const { getProductWithSize } = await import('../util/database.js');
   const getCookies = context.req.cookies.cart;
   // console.log(JSON.parse(getCookies)[0]);
   // const cookies = getCookies.map((e) => JSON.parse(e));
   const cookies = getCookies ? JSON.parse(getCookies) : [];
   console.log(cookies);
   console.log(typeof cookies.quantity);
-  const idArr = cookies.map((e) => e.id);
+  const idArr = cookies.map((e) => {
+    return { id: e.id, size: e.size };
+  });
   console.log(idArr);
   // const getBikes = await idArr.map(async (e) => await getBikesByCart(e));
   // console.log(getBikes);
-  const getBikes = idArr.map((id) => getProduct(id));
+  const getBikes = idArr.map((elem) => getProductWithSize(elem.id, elem.size));
   const bikes = await Promise.all(getBikes);
-  console.log(cookies);
-
+  console.log('cookies', cookies);
+  console.log('bikes', bikes);
   return {
     props: { cookies: cookies, bikes: bikes },
   };

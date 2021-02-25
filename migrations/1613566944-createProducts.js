@@ -1,3 +1,5 @@
+const { maxHeaderSize } = require('http');
+
 const products = [
   {
     id: 1,
@@ -74,7 +76,7 @@ function sizeArr() {
   const sizes = ['S', 'M', 'L', 'XL'];
   for (let i = 1; i <= 6; i++) {
     for (let q = 0; q <= 3; q++) {
-      arr.push({ product_id: i, size: sizes[q], stock: 10 });
+      arr.push({ product_id: i, size: sizes[q] });
     }
   }
   return arr;
@@ -82,9 +84,9 @@ function sizeArr() {
 const sizes = sizeArr();
 
 function stockArr() {
-  let arr = [];
+  const arr = [];
   for (let i = 1; i <= 24; i++) {
-    arr.push({ size_id: i, stock: 10 });
+    arr.push({ size_id: i, stock: `${Math.floor(Math.random(1) * 25)}` });
   }
   return arr;
 }
@@ -103,7 +105,7 @@ exports.up = async (sql) => {
   )}
 	`;
   await sql`
-  INSERT INTO product_size ${sql(sizes, 'product_id', 'size', 'stock')}
+  INSERT INTO product_size ${sql(sizes, 'product_id', 'size')}
   `;
   await sql`
    INSERT INTO product_stock ${sql(stock, 'size_id', 'stock')}

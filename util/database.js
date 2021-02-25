@@ -47,6 +47,12 @@ UPDATE products SET quantity = ${quantity} WHERE id = ${productId}
 RETURNING *
 `;
 }
+export async function getProductWithSize(productId, size) {
+  const product = await sql`
+  SELECT * FROM products as p, product_size as s WHERE p.id = ${productId} AND s.size = ${size} AND s.product_id = ${productId}
+  `;
+  return camelcaseRecords(product)[0];
+}
 
 //getting size and stock
 export async function getSizeStock(productId) {
