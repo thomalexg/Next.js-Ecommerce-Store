@@ -80,11 +80,11 @@ export default function SingleProduct(props) {
     }),
   );
   const [size, setSize] = useState(props.sizeStock[0] || {});
-
+  console.log('sizeStock', props.sizeStock);
   // console.log(size);
-  console.log('size', size.size);
-  console.log('itemNum', itemNum);
-  console.log(itemNum[size.index].quantity);
+  // console.log('size', size.size);
+  // console.log('itemNum', itemNum);
+  // console.log(itemNum[size.index].quantity);
 
   useEffect(() => {
     if (!Cookies.getJSON('cart')) {
@@ -128,18 +128,28 @@ export default function SingleProduct(props) {
               }}
             >
               {itemNum.index
-                ? props.sizeStock.map((e, i) => (
-                    <option key={i} value={e.size}>
-                      {' '}
-                      {`${e.size}, stock: ${e.stock}`}
-                    </option>
-                  ))
-                : props.sizeStock.map((e, i) => (
-                    <option key={i} value={e.size}>
-                      {' '}
-                      {`${e.size}, stock: ${e.stock}`}
-                    </option>
-                  ))}
+                ? props.sizeStock.map((e, i) => {
+                    console.log('index of itemNUm', itemNum[e.index].stock);
+                    return (
+                      <option key={i} value={e.size}>
+                        {' '}
+                        {`${e.size}, stock: ${
+                          itemNum[e.index].stock || e.stock
+                        }`}
+                      </option>
+                    );
+                  })
+                : props.sizeStock.map((e, i) => {
+                    console.log('index of itemNUm', itemNum[e.index].stock);
+                    return (
+                      <option key={i} value={e.size}>
+                        {' '}
+                        {`${e.size}, stock: ${
+                          itemNum[e.index].stock || e.stock
+                        }`}
+                      </option>
+                    );
+                  })}
               {/* <option value="saab">Saab</option>
              <option value="fiat">Fiat</option>
              <option value="audi">Audi</option> */}
@@ -153,12 +163,12 @@ export default function SingleProduct(props) {
             onClick={() => {
               // console.log(size);
               // setItemNum(increaseItemNum());
-              console.log('itemNUm', itemNum);
+              // console.log('itemNUm', itemNum);
               const selectedSize = itemNum.find(
                 (item) => item.size === size.size,
               );
               // const selectedSize = itemNum[size.index].size;
-              console.log('selectedSize', selectedSize);
+              // console.log('selectedSize', selectedSize);
               if (selectedSize.quantity < selectedSize.stock) {
                 const newItemNum = itemNum.map((item) => {
                   const itemCopy = { ...item };
@@ -168,10 +178,10 @@ export default function SingleProduct(props) {
 
                   return itemCopy;
                 });
-                console.log('NEW Item num', newItemNum);
+                // console.log('NEW Item num', newItemNum);
                 setItemNum(newItemNum);
               }
-              console.log('should be up by one', itemNum);
+              // console.log('should be up by one', itemNum);
             }}
           >
             +
@@ -188,6 +198,16 @@ export default function SingleProduct(props) {
               //     size.size,
               //   ),
               // );
+              const newItemNum = [...itemNum];
+              console.log('ItemNum', itemNum);
+              console.log('ItemNum Copy', newItemNum);
+              newItemNum.map((item) => {
+                if (item.size === size.size) {
+                  item.stock = item.stock - item.quantity;
+                }
+                return item;
+              });
+              setItemNum(newItemNum);
               Cookies.set(
                 'cart',
                 addCookies(

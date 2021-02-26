@@ -59,11 +59,11 @@ export function addCookies(productId, itemNum, size) {
     return item;
   });
 }
-export function addQuantity(productId, quantity) {
+export function addQuantity(productId, size, quantity) {
   const cookies = Cookies.getJSON('cart');
 
   return cookies.map((item) => {
-    if (productId === item.id) {
+    if (productId === item.id && size === item.size) {
       item.quantity = quantity + 1;
     }
     return item;

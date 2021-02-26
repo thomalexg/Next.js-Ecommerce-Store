@@ -8,7 +8,7 @@ import {
   addQuantity,
   changeQuantity,
   deleteProduct,
-  subQuantity,
+  subQuantity
 } from '../util/cookies.js';
 
 const style = css`
@@ -159,7 +159,7 @@ export default function Cart(props) {
                               //   addCookies(props.bikes[i].id, e.quantity),
                               // );
                               const newQuantity = addQuantity(
-                                props.bikes[i].id,
+                                props.bikes[i].id,props.bikes[i].size,
                                 e.quantity,
                               );
                               Cookies.set('cart', newQuantity);
