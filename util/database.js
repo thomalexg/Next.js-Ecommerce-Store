@@ -58,7 +58,7 @@ export async function getProductWithSize(productId, size) {
 export async function getSizeStock(productId) {
   const product = await sql`
 SELECT
-  p.id as id,
+  s.id as id,
   s.size as size,
   st.stock as stock
 FROM
