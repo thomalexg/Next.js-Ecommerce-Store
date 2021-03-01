@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Layout from '../components/Layout';
+import { Layout } from '../components/Layout.tsx';
 
 // const bikeImg = css`
 //   display: flex;
@@ -119,7 +119,21 @@ const container = css`
 //     return 0;
 //   }
 // }
-export default function Home(props) {
+type IndexProps = {
+  cartNum: number;
+  products: [
+    {
+      id: number;
+      title: string;
+      shortDescription: string;
+      longDescription: string;
+      imgHead: string;
+      imgNum: number;
+      price: number;
+    },
+  ];
+};
+export default function Home(props: IndexProps) {
   // const [cartNum, setCartNum] = useState(cartNumFun());
   // const [cartNum, setCartNum] = useState(
   //   Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []

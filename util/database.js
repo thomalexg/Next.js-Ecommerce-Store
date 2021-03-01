@@ -49,7 +49,7 @@ RETURNING *
 }
 export async function getProductWithSize(productId, size) {
   const product = await sql`
-  SELECT * FROM products as p, product_size as s WHERE p.id = ${productId} AND s.size = ${size} AND s.product_id = ${productId}
+  SELECT * FROM products as p, product_size as s, product_stock as st WHERE p.id = ${productId} AND s.size = ${size} AND s.product_id = ${productId} AND st.size_id = s.id
   `;
   return camelcaseRecords(product)[0];
 }

@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
+import { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import { Layout } from '../components/Layout.tsx';
 import {
   addQuantity,
   changeQuantity,
@@ -76,7 +77,27 @@ const style = css`
   }
 `;
 
-export default function Cart(props) {
+type CartProps = {
+  cartNum: number,
+  cookies: [{
+    id: number;
+          quantity: number;
+          size: string;
+          index: number;
+  }] | [],
+  bikes: [{
+    title: string,
+    productId: number,
+        id: number,
+        size: string,
+        imgHead: string,
+        stock: number,
+price: number
+  }],
+  setCartNum: any
+}
+
+export default function Cart(props: CartProps) {
   // const [quantity, setQuantity] = useState(props.cookies ? props.cookies : []);
   const [quantity, setQuantity] = useState(props.cookies);
   // console.log(quantity);
@@ -88,7 +109,7 @@ export default function Cart(props) {
   //     setClicked(false);
   //   }
   // }, [clicked, setClicked, props.cookies]);
-  if (quantity.length === 0 || !quantity) {
+  if (quantity.length === 0) {
     return (
       <Layout cartNum="0">
         <div>
@@ -158,13 +179,15 @@ export default function Cart(props) {
                               // console.log(
                               //   addCookies(props.bikes[i].id, e.quantity),
                               // );
+                              if (props.bikes[i].stock > e.quantity) {
                               const newQuantity = addQuantity(
-                                props.bikes[i].id,props.bikes[i].size,
-                                e.quantity,
+                                props.bikes[i].productId,props.bikes[i].size
                               );
+                              console.log(newQuantity);
                               Cookies.set('cart', newQuantity);
                               setQuantity(newQuantity);
                               props.setCartNum(props.cartNum + 1);
+                              }
                             }}
                           >
                             +
@@ -178,13 +201,15 @@ export default function Cart(props) {
                             defaultValue={e.quantity}
                             value={e.quantity}
                             onChange={(event) => {
+                              if (Number(event.target.value) < props.bikes[i].stock) {
                               const newQuantity = changeQuantity(
-                                props.bikes[i].id,
-                                Number(event.target.value),
+                                props.bikes[i].productId,
+                                Number(event.target.value), e.size
                               );
                               Cookies.set('cart', newQuantity);
                               setQuantity(newQuantity);
-                              props.setCartNum(event.target.value);
+                              props.setCartNum(props.cartNum - Number(e.quantity) + Number(event.target.value));
+                              }
                             }}
                           />
                           <button
@@ -194,8 +219,8 @@ export default function Cart(props) {
                             onClick={() => {
                               if (quantity[i].quantity > 1) {
                                 const newQuantity = subQuantity(
-                                  props.bikes[i].id,
-                                  e.quantity,
+                                  props.bikes[i].productId,
+                                  props.bikes[i].size
                                 );
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
@@ -232,6 +257,7 @@ export default function Cart(props) {
                             const newQuantity = deleteProduct(i);
                             console.log(newQuantity);
                             Cookies.set('cart', newQuantity);
+                            props.setCartNum(props.cartNum - Number(e.quantity))
                             setQuantity(newQuantity);
                           }}
                         >
@@ -270,7 +296,7 @@ export default function Cart(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getProductWithSize } = await import('../util/database.js');
   const getCookies = context.req.cookies.cart;
   // console.log(JSON.parse(getCookies)[0]);
@@ -278,13 +304,13 @@ export async function getServerSideProps(context) {
   const cookies = getCookies ? JSON.parse(getCookies) : [];
   console.log(cookies);
   console.log(typeof cookies.quantity);
-  const idArr = cookies.map((e) => {
+  const idArr = cookies.map((e : any) => {
     return { id: e.id, size: e.size };
   });
   console.log(idArr);
   // const getBikes = await idArr.map(async (e) => await getBikesByCart(e));
   // console.log(getBikes);
-  const getBikes = idArr.map((elem) => getProductWithSize(elem.id, elem.size));
+  const getBikes = idArr.map((elem : any) => getProductWithSize(elem.id, elem.size));
   const bikes = await Promise.all(getBikes);
   console.log('cookies', cookies);
   console.log('bikes', bikes);

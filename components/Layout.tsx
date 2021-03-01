@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FunctionComponent } from 'react';
 
 const headerStyles = css`
   background-color: rgba(210, 215, 211, 1);
@@ -62,7 +63,14 @@ const foot = css`
   width: 100%;
 `;
 
-export default function Layout(props) {
+type LayoutProps = {
+  cartNum: Number;
+};
+
+export const Layout: FunctionComponent<LayoutProps> = ({
+  children,
+  cartNum,
+}) => {
   // console.log(props.cartNum);
   return (
     <>
@@ -82,7 +90,7 @@ export default function Layout(props) {
           </Link>
           <div className="scart">
             <Link href="/cart">
-              <a>{props.cartNum}</a>
+              <a>{cartNum}</a>
             </Link>
             <Link href="/cart">
               <Image
@@ -99,7 +107,7 @@ export default function Layout(props) {
         </div>
       </header>
 
-      {props.children}
+      {children}
 
       <footer css={foot}>
         <span>Send Bikes</span>{' '}
@@ -112,7 +120,7 @@ export default function Layout(props) {
       </footer>
     </>
   );
-}
+};
 // export async function getServerSideProps(context) {
 //   const getCart = context.req.cookies.cart;
 //   const cart = JSON.parse(getCart);

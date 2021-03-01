@@ -59,33 +59,43 @@ export function addCookies(productId, itemNum, size) {
     return item;
   });
 }
-export function addQuantity(productId, size, quantity) {
+// export function addQuantity(productId, size, quantity) {
+//   const cookies = Cookies.getJSON('cart');
+
+//   return cookies.map((item) => {
+//     if (productId === item.id && size === item.size) {
+//       item.quantity = quantity + 1;
+//     }
+//     return item;
+//   });
+// }
+export function addQuantity(productId, size) {
+  const cookies = Cookies.getJSON('cart');
+  console.log('cookies', cookies);
+  return cookies.map((item) => {
+    if (productId === item.id && size === item.size) {
+      item.quantity = item.quantity + 1;
+    }
+    return item;
+  });
+}
+
+export function subQuantity(productId, size) {
   const cookies = Cookies.getJSON('cart');
 
   return cookies.map((item) => {
     if (productId === item.id && size === item.size) {
-      item.quantity = quantity + 1;
+      item.quantity = item.quantity - 1;
     }
     return item;
   });
 }
 
-export function subQuantity(productId, quantity) {
+export function changeQuantity(productId, quantity, size) {
   const cookies = Cookies.getJSON('cart');
 
   return cookies.map((item) => {
-    if (productId === item.id) {
-      item.quantity = quantity - 1;
-    }
-    return item;
-  });
-}
-
-export function changeQuantity(productId, quantity) {
-  const cookies = Cookies.getJSON('cart');
-
-  return cookies.map((item) => {
-    if (productId === item.id) {
+    if (productId === item.id && size === item.size) {
       item.quantity = quantity;
     }
     return item;

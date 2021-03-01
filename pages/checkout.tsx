@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 //@import url('https://fonts.googleapis.com/css?family=Arimo');
 const style = css`
@@ -196,9 +197,23 @@ const style = css`
     }
   }
 `;
+type CheckoutProps = {
+  cookies:
+    | [
+        {
+          id: number;
+          quantity: number;
+          size: string;
+          index: number;
+        },
+      ]
+    | null;
+};
 
-export default function Checkout(props) {
-  if (props.cookies?.length === 0) {
+export default function Checkout(props: CheckoutProps) {
+  // const propsCookies = props.cookies;
+
+  if (props.cookies === null) {
     return (
       <div>
         <div>Nada en la shopping carta!</div>
@@ -271,13 +286,13 @@ export default function Checkout(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const getCookies = context.req.cookies.cart;
 
   const cookies = getCookies ? JSON.parse(getCookies) : [];
   console.log(cookies);
 
   return {
-    props: { cookies: cookies },
+    props: { cookies: cookies || null },
   };
 }
