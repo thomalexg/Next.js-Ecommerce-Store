@@ -72,6 +72,12 @@ WHERE
 `;
   return product;
 }
+export async function getPrices(id, size) {
+  const product = await sql`
+  SELECT p.price FROM products as p, product_size as s WHERE p.id = ${id} AND s.product_id = p.id  AND s.size = ${size}
+  `;
+  return product[0];
+}
 // export async function getSizeStock(productId) {
 //   const product = await sql`
 // SELECT s.size as size, s.stock as stock, p.id as id FROM products as p INNER JOIN product_size as s ON p.id = s.product_id WHERE p.id = ${productId}

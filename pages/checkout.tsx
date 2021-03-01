@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 //@import url('https://fonts.googleapis.com/css?family=Arimo');
@@ -225,7 +226,13 @@ export default function Checkout(props: CheckoutProps) {
     <div>
       <div css={style} className="wrapper">
         <div className="container">
-          <form action="/thankyou">
+          <form
+            action="/thankyou"
+            onSubmit={(e: any) => {
+              e.preventDefault;
+              Cookies.set('cart', []);
+            }}
+          >
             <h1>
               <i className="fas fa-shipping-fast" />
               Shipping Details
@@ -276,7 +283,7 @@ export default function Checkout(props: CheckoutProps) {
               </div>
             </div>
             <div className="btns">
-              <button>Purchase</button>
+              <button>Purchase (Total sum: {props.sum} €)</button>
               <Link href="/cart">Back to cart</Link>
             </div>
           </form>
@@ -287,12 +294,26 @@ export default function Checkout(props: CheckoutProps) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { getPrices } = await import('../util/database.js');
+
   const getCookies = context.req.cookies.cart;
 
   const cookies = getCookies ? JSON.parse(getCookies) : [];
-  console.log(cookies);
+  // console.log(cookies);
+  const idArr = cookies.map((e: any) => {
+    return { id: e.id, size: e.size };
+  });
+  console.log(idArr);
+  const fetchPrices = idArr.map((e: any) => getPrices(e.id, e.size));
+  const prices = await Promise.all(fetchPrices);
+  const sum = prices
+    .map((elem, index) => {
+      return { price: elem.price, quantity: cookies[index].quantity };
+    })
+    .map((elem) => elem.price * elem.quantity)
+    .reduce((a, b) => a + b);
 
   return {
-    props: { cookies: cookies || null },
+    props: { cookies: cookies || null, sum: sum },
   };
 }
