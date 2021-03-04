@@ -2,9 +2,10 @@
 import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
-//@import url('https://fonts.googleapis.com/css?family=Arimo');
+import { useRouter } from 'next/router';
+// @import url('https://fonts.googleapis.com/css?family=Arimo');
 const style = css`
-  $coral: #eb9478;
+  $coral: rgba(242, 241, 239, 1);
   $maroon: #8e2807;
   $title: #493b76;
 
@@ -19,7 +20,7 @@ const style = css`
     display: flex;
     justify-content: center;
     font-family: 'Arimo';
-    background-color: $coral;
+    background-color: rgba(242, 241, 239, 1);
     -webkit-box-shadow: 9px 13px 25px 0px rgba(0, 0, 0, 0.18);
     -moz-box-shadow: 9px 13px 25px 0px rgba(0, 0, 0, 0.18);
     box-shadow: 9px 13px 25px 0px rgba(0, 0, 0, 0.18);
@@ -122,9 +123,8 @@ const style = css`
     button {
       margin: 3px 0;
       height: 30px;
-      width: 40%;
-      color: #cfc9e1;
-      background-color: #4a3b76;
+      color: black;
+      background-color: gold;
       text-transform: uppercase;
       border: 0;
       border-radius: 0.3rem;
@@ -140,8 +140,8 @@ const style = css`
 
   @keyframes btn-hov {
     100% {
-      background-color: #cfc9e1;
-      color: #4a3b76;
+      background-color: #c5c219;
+      color: #fff;
       transform: scale(1.05);
     }
   }
@@ -164,7 +164,7 @@ const style = css`
       align-items: center;
 
       button {
-        width: 50%;
+        /* width: 50%; */
       }
     }
 
@@ -209,11 +209,15 @@ type CheckoutProps = {
         },
       ]
     | null;
+  sum: number;
 };
 
-export default function Checkout(props: CheckoutProps) {
-  // const propsCookies = props.cookies;
+type PricesType = {
+  price: number;
+}[];
 
+export default function Checkout(props: CheckoutProps) {
+  const router = useRouter();
   if (props.cookies === null) {
     return (
       <div>
@@ -227,10 +231,10 @@ export default function Checkout(props: CheckoutProps) {
       <div css={style} className="wrapper">
         <div className="container">
           <form
-            action="/thankyou"
             onSubmit={(e: any) => {
-              e.preventDefault;
+              e.preventDefault();
               Cookies.set('cart', []);
+              router.push('/thankyou');
             }}
           >
             <h1>
@@ -240,29 +244,29 @@ export default function Checkout(props: CheckoutProps) {
             <div className="name">
               <div>
                 <label htmlFor="f-name">First</label>
-                <input type="text" name="f-name" required />
+                <input data-cy="f-name" type="text" name="f-name" required />
               </div>
               <div>
                 <label htmlFor="l-name">Last</label>
-                <input type="text" name="l-name" required />
+                <input data-cy="l-name" type="text" name="l-name" required />
               </div>
             </div>
             <div className="street">
               <label htmlFor="name">Street</label>
-              <input type="text" name="address" required />
+              <input data-cy="street" type="text" name="address" required />
             </div>
             <div className="address-info">
               <div>
                 <label htmlFor="city">City</label>
-                <input type="text" name="city" required />
+                <input data-cy="city" type="text" name="city" required />
               </div>
               <div>
                 <label htmlFor="state">State</label>
-                <input type="text" name="state" required />
+                <input data-cy="state" type="text" name="state" required />
               </div>
               <div>
                 <label htmlFor="zip">Zip</label>
-                <input type="text" name="zip" required />
+                <input data-cy="zip" type="text" name="zip" required />
               </div>
             </div>
             <h1>
@@ -270,20 +274,27 @@ export default function Checkout(props: CheckoutProps) {
             </h1>
             <div className="cc-num">
               <label htmlFor="card-num">Credit Card No.</label>
-              <input type="text" name="card-num" required />
+              <input data-cy="card-num" type="text" name="card-num" required />
             </div>
             <div className="cc-info">
               <div>
                 <label htmlFor="card-num">Exp</label>
-                <input type="text" name="expire" required />
+                <input data-cy="expire" type="text" name="expire" required />
               </div>
               <div>
                 <label htmlFor="card-num">CCV</label>
-                <input type="text" name="security" required />
+                <input
+                  data-cy="security-num"
+                  type="text"
+                  name="security"
+                  required
+                />
               </div>
             </div>
             <div className="btns">
-              <button>Purchase (Total sum: {props.sum} €)</button>
+              <button data-cy="purchase">
+                Purchase (Total sum: {props.sum} €)
+              </button>
               <Link href="/cart">Back to cart</Link>
             </div>
           </form>
@@ -299,19 +310,20 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const getCookies = context.req.cookies.cart;
 
   const cookies = getCookies ? JSON.parse(getCookies) : [];
-  // console.log(cookies);
   const idArr = cookies.map((e: any) => {
     return { id: e.id, size: e.size };
   });
   console.log(idArr);
   const fetchPrices = idArr.map((e: any) => getPrices(e.id, e.size));
-  const prices = await Promise.all(fetchPrices);
+  const prices: PricesType = await Promise.all(fetchPrices);
+  console.log('prices', prices);
   const sum = prices
     .map((elem, index) => {
       return { price: elem.price, quantity: cookies[index].quantity };
     })
     .map((elem) => elem.price * elem.quantity)
     .reduce((a, b) => a + b);
+  console.log('sum', sum);
 
   return {
     props: { cookies: cookies || null, sum: sum },

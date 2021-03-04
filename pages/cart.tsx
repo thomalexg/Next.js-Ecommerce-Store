@@ -4,17 +4,20 @@ import { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Layout } from '../components/Layout.tsx';
+import { Layout } from '../components/Layout';
 import {
   addQuantity,
   changeQuantity,
   deleteProduct,
-  subQuantity
+  subQuantity,
 } from '../util/cookies.js';
+import sum from '../util/sumFunction';
 
 const style = css`
   body {
     font-family: 'Roboto', sans-serif;
+    margin-bottom: 20px;
+    margin: 0 auto 20px;
   }
   * {
     margin: 0;
@@ -24,7 +27,6 @@ const style = css`
     margin-right: 10px;
   }
 
-  /*------------------------*/
   input:focus,
   button:focus,
   .form-control:focus {
@@ -75,57 +77,58 @@ const style = css`
   .img-prdct img {
     width: 100%;
   }
+  .checkout {
+    background-color: gold;
+    padding: 5px 10px;
+    vertical-align: center;
+    margin: 200px;
+    border-radius: 25px;
+  }
 `;
 
 type CartProps = {
-  cartNum: number,
-  cookies: [{
-    id: number;
+  cartNum: number;
+  cookies:
+    | [
+        {
+          id: number;
           quantity: number;
           size: string;
           index: number;
-  }] | [],
-  bikes: [{
-    title: string,
-    productId: number,
-        id: number,
-        size: string,
-        imgHead: string,
-        stock: number,
-price: number
-  }],
-  setCartNum: any
-}
+        },
+      ]
+    | [];
+  bikes: [
+    {
+      title: string;
+      productId: number;
+      id: number;
+      size: string;
+      imgHead: string;
+      stock: number;
+      price: number;
+    },
+  ];
+  setCartNum: any;
+};
 
 export default function Cart(props: CartProps) {
-  // const [quantity, setQuantity] = useState(props.cookies ? props.cookies : []);
   const [quantity, setQuantity] = useState(props.cookies);
-  // console.log(quantity);
-  // const [clicked, setClicked] = useState(false);
 
-  // useEffect(() => {
-  //   if (clicked) {
-  //     setQuantity(props.cookies);
-  //     setClicked(false);
-  //   }
-  // }, [clicked, setClicked, props.cookies]);
   if (quantity.length === 0) {
     return (
-      <Layout cartNum="0">
+      <Layout cartNum={props.cartNum}>
         <div>
-          <div>No items in shopping cart!</div>
-          <Link href="/">Back to shop</Link>
+          <div data-cy="empty-cart">No items in shopping cart!</div>
+          <Link href="/">
+            <a data-cy="back-to-shop">Back to shop</a>
+          </Link>
         </div>
       </Layout>
     );
   }
   return (
-    <Layout
-      cartNum={props.cartNum}
-      // cartNum={quantity.reduce((a, v) => {
-      //   return a.quantity + v.quantity;
-      // })}
-    >
+    <Layout cartNum={props.cartNum}>
       <div css={style} className="container-fluid mt-5">
         <h2 className="mb-5 text-center">Shopping Cart</h2>
 
@@ -172,21 +175,20 @@ export default function Cart(props: CartProps) {
                       <td>
                         <div className="button-container">
                           <button
+                            data-cy="increase-item"
                             className="cart-qty-plus"
                             type="button"
                             value="+"
                             onClick={() => {
-                              // console.log(
-                              //   addCookies(props.bikes[i].id, e.quantity),
-                              // );
                               if (props.bikes[i].stock > e.quantity) {
-                              const newQuantity = addQuantity(
-                                props.bikes[i].productId,props.bikes[i].size
-                              );
-                              console.log(newQuantity);
-                              Cookies.set('cart', newQuantity);
-                              setQuantity(newQuantity);
-                              props.setCartNum(props.cartNum + 1);
+                                const newQuantity = addQuantity(
+                                  props.bikes[i].productId,
+                                  props.bikes[i].size,
+                                );
+                                console.log(newQuantity);
+                                Cookies.set('cart', newQuantity);
+                                setQuantity(newQuantity);
+                                props.setCartNum(props.cartNum + 1);
                               }
                             }}
                           >
@@ -197,22 +199,31 @@ export default function Cart(props: CartProps) {
                             name="qty"
                             min={0}
                             className="qty form-control"
-                            // defaultValue={quantity[i].quantity}
                             defaultValue={e.quantity}
                             value={e.quantity}
                             onChange={(event) => {
-                              if (Number(event.target.value) < props.bikes[i].stock) {
-                              const newQuantity = changeQuantity(
-                                props.bikes[i].productId,
-                                Number(event.target.value), e.size
-                              );
-                              Cookies.set('cart', newQuantity);
-                              setQuantity(newQuantity);
-                              props.setCartNum(props.cartNum - Number(e.quantity) + Number(event.target.value));
+                              if (
+                                Number(event.target.value) <
+                                props.bikes[i].stock
+                              ) {
+                                const newQuantity = changeQuantity(
+                                  props.bikes[i].productId,
+                                  Number(event.target.value),
+                                  e.size,
+                                  Cookies.getJSON('cart'),
+                                );
+                                Cookies.set('cart', newQuantity);
+                                setQuantity(newQuantity);
+                                props.setCartNum(
+                                  props.cartNum -
+                                    Number(e.quantity) +
+                                    Number(event.target.value),
+                                );
                               }
                             }}
                           />
                           <button
+                            data-cy="decrease-item"
                             className="cart-qty-minus"
                             type="button"
                             value="-"
@@ -220,13 +231,16 @@ export default function Cart(props: CartProps) {
                               if (quantity[i].quantity > 1) {
                                 const newQuantity = subQuantity(
                                   props.bikes[i].productId,
-                                  props.bikes[i].size
+                                  props.bikes[i].size,
                                 );
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
                                 props.setCartNum(props.cartNum - 1);
                               } else {
-                                const newQuantity = deleteProduct(i);
+                                const newQuantity = deleteProduct(
+                                  i,
+                                  Cookies.getJSON('cart'),
+                                );
                                 Cookies.set('cart', newQuantity);
                                 setQuantity(newQuantity);
                                 props.setCartNum(props.cartNum - 1);
@@ -253,11 +267,17 @@ export default function Cart(props: CartProps) {
                       </td>
                       <td>
                         <button
+                          data-cy="delete-item"
                           onClick={() => {
-                            const newQuantity = deleteProduct(i);
+                            const newQuantity = deleteProduct(
+                              i,
+                              Cookies.getJSON('cart'),
+                            );
                             console.log(newQuantity);
                             Cookies.set('cart', newQuantity);
-                            props.setCartNum(props.cartNum - Number(e.quantity))
+                            props.setCartNum(
+                              props.cartNum - Number(e.quantity),
+                            );
                             setQuantity(newQuantity);
                           }}
                         >
@@ -274,13 +294,7 @@ export default function Cart(props: CartProps) {
                       <strong>
                         TOTAL = €{' '}
                         <span id="total" className="total">
-                          {quantity
-                            .map((e, i) => {
-                              return e.quantity * props.bikes[i].price;
-                            })
-                            .reduce((a, v) => {
-                              return a + v;
-                            })}
+                          {sum(quantity, props.bikes)}
                         </span>
                       </strong>
                     </td>
@@ -290,7 +304,11 @@ export default function Cart(props: CartProps) {
             </div>
           </div>
         </div>
-        <Link href="/checkout">checkout => </Link>
+        <Link href="/checkout">
+          <a className="checkout" data-cy="go-to-checkout">
+            go to checkout!
+          </a>
+        </Link>
       </div>
     </Layout>
   );
@@ -299,21 +317,17 @@ export default function Cart(props: CartProps) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getProductWithSize } = await import('../util/database.js');
   const getCookies = context.req.cookies.cart;
-  // console.log(JSON.parse(getCookies)[0]);
-  // const cookies = getCookies.map((e) => JSON.parse(e));
+
   const cookies = getCookies ? JSON.parse(getCookies) : [];
-  console.log(cookies);
-  console.log(typeof cookies.quantity);
-  const idArr = cookies.map((e : any) => {
+  const idArr = cookies.map((e: any) => {
     return { id: e.id, size: e.size };
   });
-  console.log(idArr);
-  // const getBikes = await idArr.map(async (e) => await getBikesByCart(e));
-  // console.log(getBikes);
-  const getBikes = idArr.map((elem : any) => getProductWithSize(elem.id, elem.size));
+
+  const getBikes = idArr.map((elem: any) =>
+    getProductWithSize(elem.id, elem.size),
+  );
   const bikes = await Promise.all(getBikes);
-  console.log('cookies', cookies);
-  console.log('bikes', bikes);
+
   return {
     props: { cookies: cookies, bikes: bikes },
   };

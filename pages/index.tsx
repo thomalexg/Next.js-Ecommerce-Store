@@ -1,20 +1,9 @@
 /** @jsxImportSource @emotion/react */ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Layout } from '../components/Layout.tsx';
+import { Layout } from '../components/Layout';
 
-// const bikeImg = css`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-image: url('/sd.jpg');
-//   background-size: cover;
-//   width: 500px;
-//   height: auto;
-//   background-position: center;
-// `;
-
-const newBike = function (image) {
+const newBike = function (image: string) {
   return css`
     display: flex;
     border-radius: 10px;
@@ -22,8 +11,6 @@ const newBike = function (image) {
     align-items: center;
     background-image: url(${image});
     background-size: cover;
-    /* width: 500px;
-    height: 292.5px; */
     width: 666.67px;
     height: 390px;
     box-shadow: 10px 5px 5px black;
@@ -31,8 +18,32 @@ const newBike = function (image) {
     .content {
       transition: 3s all ease-in;
       display: none;
+      // delete this
+      transition: 3s all ease-in;
+      display: block;
+      color: black;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      background-color: rgba(232, 232, 232, 0.2);
+      border-radius: 10px;
+      text-align: center;
+      justify-content: center;
+      p {
+        color: khaki;
+        display: block;
+
+        font-weight: 90%;
+        margin: 16px 0 51px;
+      }
+      h1 {
+        font-size: 2em;
+
+        padding-top: 40px;
+        padding-bottom: 35px;
+      }
     }
-    :hover {
+    /* :hover {
       .content {
         transition: 3s all ease-in;
         display: block;
@@ -47,16 +58,16 @@ const newBike = function (image) {
         p {
           color: white;
           display: block;
-          padding-bottom: 2.5em;
-          font-weight: 10em;
+          padding-bottom: 25px;
+          font-weight: 90%;
         }
         h1 {
-          font-weight: 0.1em;
+          font-weight: 90%;
           padding-bottom: 1em;
           padding-top: 0.5em;
         }
       }
-    }
+    } */
     a {
       background-color: rgba(236, 240, 241, 0.5);
       width: 30%;
@@ -85,7 +96,6 @@ const newBike = function (image) {
 };
 const container = css`
   width: 100%;
-  /* height: 80vh; */
   background-color: transparent;
   margin: 0;
   display: grid;
@@ -98,7 +108,6 @@ const container = css`
   padding: 50px 100px 50px;
   .bikeImg {
     justify-self: center;
-    /* margin-top: 50px; */
   }
   @media (max-width: 1800px) {
     padding: 50px 0;
@@ -110,15 +119,6 @@ const container = css`
   }
 `;
 
-// function cartNumFun() {
-//   if (Cookies.getJSON('cart') !== [] || Cookies.getJSON('cart')) {
-//     Cookies.getJSON('cart').reduce((a, v) => {
-//       return a.quantity + v.quantity;
-//     });
-//   } else {
-//     return 0;
-//   }
-// }
 type IndexProps = {
   cartNum: number;
   products: [
@@ -134,15 +134,6 @@ type IndexProps = {
   ];
 };
 export default function Home(props: IndexProps) {
-  // const [cartNum, setCartNum] = useState(cartNumFun());
-  // const [cartNum, setCartNum] = useState(
-  //   Cookies.getJSON('cart') || Cookies.getJSON('cart') !== []
-  //     ? Cookies.getJSON('cart').reduce((a, v) => {
-  //         return a.quantity + v.quantity;
-  //       })
-  //     : 0,
-  // );
-
   return (
     <Layout cartNum={props.cartNum}>
       <Head>
@@ -157,7 +148,10 @@ export default function Home(props: IndexProps) {
           >
             <div className="content">
               <h1>{product.title}</h1>
-              <p>{product.shortDescription}</p>
+              <div />
+              <div>
+                <p>{product.shortDescription}</p>
+              </div>
               <Link href={`/${product.id}`}>
                 <a>Show me more</a>
               </Link>
@@ -170,15 +164,6 @@ export default function Home(props: IndexProps) {
 }
 
 export async function getServerSideProps() {
-  // ✅ Anything that we run in this function will get
-  // run ONLY on the server.
-  //
-  // This allows us to run server-side code such as
-  // connecting to a database, etc.
-
-  // This static import...
-  // import { getTeamMembers } from '../../database';
-  // ...can also be written as a dynamic import, like this:
   const { getProducts } = await import('../util/database.js');
 
   const products = await getProducts();

@@ -71,7 +71,6 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   cartNum,
 }) => {
-  // console.log(props.cartNum);
   return (
     <>
       <Head>
@@ -85,7 +84,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
               <a>Login</a>
             </Link>
           </div>
-          <Link className="logo_link" href="/">
+          <Link href="/">
             <a className="logo">Send Bikes</a>
           </Link>
           <div className="scart">
@@ -93,12 +92,14 @@ export const Layout: FunctionComponent<LayoutProps> = ({
               <a>{cartNum}</a>
             </Link>
             <Link href="/cart">
-              <Image
-                className="scartIcon"
-                width="40"
-                height="40"
-                src="/scart.png"
-              />
+              <a data-cy="go-to-cart">
+                <Image
+                  className="scartIcon"
+                  width="40"
+                  height="40"
+                  src="/scart.png"
+                />
+              </a>
             </Link>
           </div>
         </div>
@@ -121,17 +122,3 @@ export const Layout: FunctionComponent<LayoutProps> = ({
     </>
   );
 };
-// export async function getServerSideProps(context) {
-//   const getCart = context.req.cookies.cart;
-//   const cart = JSON.parse(getCart);
-//   console.log(getCart);
-//   console.log(cart);
-
-//   // const { getProducts } = await import('../util/database.js');
-
-//   // const products = await getProducts();
-
-//   return {
-//     props: { cart: cart },
-//   };
-// }

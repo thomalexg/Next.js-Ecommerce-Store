@@ -32,3 +32,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+//
+import { deleteProduct } from '../cookies';
+
+const indexToDelete= 1;
+
+test('delete cookie of indexToDelete', () => {
+  const visitsCookieValue = [{id: 1, quantity: 3, size: "S}, {id: 1, quantity: 5, size: "M}];
+  const result = deleteProduct(
+    indexToDelete,
+    visitsCookieValue
+  );
+  expect(result).toEqual([{id: 1, quantity: 3, size: "S}]);
+});
+
+test('add new team member when cookie contains non-matching team member', () => {
+  const visitsCookieValue = [{ teamMemberId: 2, visits: 2 }];
+  const result = incrementVisitsByTeamMember(
+    visitsCookieValue,
+    teamMemberIdToAdd,
+  );
+  expect(result).toEqual([
+    ...visitsCookieValue,
+    { teamMemberId: teamMemberIdToAdd, visits: 1 },
+  ]);
+});
+
+test('increment team member visits when cookie contains matching team member', () => {
+  const visitsCookieValue = [{ teamMemberId: teamMemberIdToAdd, visits: 2 }];
+  const result = incrementVisitsByTeamMember(
+    visitsCookieValue,
+    teamMemberIdToAdd,
+  );
+  expect(result).toEqual([{ teamMemberId: teamMemberIdToAdd, visits: 3 }]);
+});
