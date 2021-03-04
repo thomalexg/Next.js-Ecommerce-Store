@@ -83,10 +83,66 @@ const newBike = function (image: string) {
     @media (max-width: 760px) {
       width: 500px;
       height: 292.5px;
+      .content {
+        transition: 3s all ease-in;
+        display: none;
+        // delete this
+        transition: 3s all ease-in;
+        display: block;
+        color: black;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        background-color: rgba(232, 232, 232, 0.2);
+        border-radius: 10px;
+        text-align: center;
+        justify-content: center;
+        p {
+          color: khaki;
+          display: block;
+
+          font-weight: 90%;
+          margin: 16px 0 51px;
+        }
+        h1 {
+          font-size: 1.7em;
+
+          padding-top: 30px;
+          padding-bottom: 35px;
+        }
+      }
     }
     @media (max-width: 630px) {
       width: 375px;
       height: 219.375px;
+      .content {
+        transition: 3s all ease-in;
+        display: none;
+        // delete this
+        transition: 3s all ease-in;
+        display: block;
+        color: black;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        background-color: rgba(232, 232, 232, 0.2);
+        border-radius: 10px;
+        text-align: center;
+        justify-content: center;
+        p {
+          color: khaki;
+          display: block;
+
+          font-weight: 90%;
+          margin: 16px 0 51px;
+        }
+        h1 {
+          font-size: 1.7em;
+
+          padding-top: 30px;
+          padding-bottom: 35px;
+        }
+      }
     }
     @media (max-width: 450px) {
       width: 250px;
