@@ -1,4 +1,4 @@
-import sum from '../../util/sumFunction';
+import sum from '../sumFunction';
 
 test('sum of shopping cart', () => {
   const quantity = [
