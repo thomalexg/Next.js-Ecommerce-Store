@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { Layout } from '../components/Layout';
 import { addCookies } from '../util/cookies.js';
 
@@ -42,20 +42,30 @@ const imagesdiv = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  z-index: 1;
   .img {
     margin: 10px 0 !important;
+    z-index: 1;
   }
 `;
 
 type SizeStock = Array<{
   id: number;
-  size: String;
+  size: string;
   stock: number;
   index: number;
   quantity: number;
 }>;
 
 type CookiesType = { id: number; size: string; quantity: number }[];
+
+type Size = {
+  id: number;
+  size: string;
+  stock: number;
+  index: number;
+  quantity: number;
+};
 
 type SingleProductProps = {
   product: {
@@ -68,7 +78,7 @@ type SingleProductProps = {
     price: number;
   };
   cartNum: number;
-  setCartNum: number;
+  setCartNum: Dispatch<number>;
   sizeStock: SizeStock;
 };
 function setstateItemNum(sizeStock: SizeStock, cookies: CookiesType) {
@@ -91,9 +101,11 @@ function setstateItemNum(sizeStock: SizeStock, cookies: CookiesType) {
 }
 export default function SingleProduct(props: SingleProductProps) {
   const [itemNum, setItemNum] = useState<SizeStock>([]);
-  const [size, setSize] = useState(props.sizeStock[0]);
+  const [size, setSize] = useState<Size | undefined>(props.sizeStock[0]);
   const [count, setCount] = useState(0);
 
+  console.log('itemNum', itemNum);
+  console.log('size', size);
   useEffect(() => {
     const initalItemNum = Cookies.getJSON('cart')?.some(
       (elem: any) => elem.id === props.sizeStock[0].id,
@@ -144,23 +156,26 @@ export default function SingleProduct(props: SingleProductProps) {
                 );
               }}
             >
-              {itemNum.index
-                ? props.sizeStock.map((e, i) => {
-                    return (
-                      <option key={i} value={e.size}>
-                        {' '}
-                        {`${e.size}, stock: ${e.stock}`}
-                      </option>
-                    );
-                  })
-                : props.sizeStock.map((e, i) => {
-                    return (
-                      <option key={i} value={e.size}>
-                        {' '}
-                        {`${e.size}, stock: ${e.stock}`}
-                      </option>
-                    );
-                  })}
+              {
+                // itemNum.index
+                //   ? props.sizeStock.map((e, i) => {
+                //       return (
+                //         <option key={i} value={e.size}>
+                //           {' '}
+                //           {`${e.size}, stock: ${e.stock}`}
+                //         </option>
+                //       );
+                //     })
+                //   :
+                props.sizeStock.map((e, i) => {
+                  return (
+                    <option key={i} value={e.size}>
+                      {' '}
+                      {`${e.size}, stock: ${e.stock}`}
+                    </option>
+                  );
+                })
+              }
             </select>
           </form>
           <button
@@ -177,10 +192,12 @@ export default function SingleProduct(props: SingleProductProps) {
             data-cy="increase-item-number-to-one"
             onClick={() => {
               const selectedSize = itemNum.find(
-                (item) => item.size === size.size,
+                (item) => item.size === size?.size,
               );
-              if (count < selectedSize.stock) {
-                setCount(count + 1);
+              if (selectedSize) {
+                if (count < selectedSize.stock) {
+                  setCount(count + 1);
+                }
               }
             }}
           >
@@ -188,14 +205,14 @@ export default function SingleProduct(props: SingleProductProps) {
           </button>
 
           <button
-          data-cy="add-to-cart"
+            data-cy="add-to-cart"
             onClick={() => {
               if (count > 0) {
                 const newItemNum = [...itemNum];
                 console.log('ItemNum', itemNum);
                 console.log('ItemNum Copy', newItemNum);
                 newItemNum.map((item) => {
-                  if (item.size === size.size) {
+                  if (item.size === size?.size) {
                     item.stock = item.stock - count;
                   }
                   return item;
@@ -206,13 +223,11 @@ export default function SingleProduct(props: SingleProductProps) {
                   addCookies(
                     props.product.id,
                     count,
-                    size.size,
+                    size?.size,
                     Cookies.getJSON('cart'),
                   ),
                 );
-                props.setCartNum(props.cartNum + count);
-
-                console.log('cookies:', Cookies.getJSON('cart'));
+                props.setCartNum(Number(props.cartNum + count));
               }
             }}
           >
@@ -246,6 +261,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const sizeStock = await getSizeStock(id);
 
   return {
-    props: { product: product || [{}], sizeStock: sizeStock || [{}] },
+    props: { product: product, sizeStock: sizeStock },
   };
 }

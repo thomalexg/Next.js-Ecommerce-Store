@@ -18,6 +18,7 @@ const style = css`
     font-family: 'Roboto', sans-serif;
     margin-bottom: 20px;
     margin: 0 auto 20px;
+    min-height: 500px;
   }
   * {
     margin: 0;

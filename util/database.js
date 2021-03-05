@@ -42,7 +42,7 @@ export async function getProduct(productId) {
 }
 
 export async function updateQuantity(productId, quantity) {
-  const product = await sql`
+  await sql`
 UPDATE products SET quantity = ${quantity} WHERE id = ${productId}
 RETURNING *
 `;

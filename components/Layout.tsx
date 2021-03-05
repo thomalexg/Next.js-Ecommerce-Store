@@ -5,22 +5,23 @@ import Link from 'next/link';
 import { FunctionComponent } from 'react';
 
 const headerStyles = css`
-  background-color: rgba(210, 215, 211, 1);
   width: 100%;
   position: sticky;
   /* height: 110px; */
-  min-height: 50px;
-  height: 15vh;
+  z-index: 10;
   top: 0;
   left: 0;
 
   .gridCon {
+    z-index: 10;
+    background-color: rgba(210, 215, 211, 1);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     z-index: 10;
   }
   .logo {
-    justify-self: center;
+    justify-self: start;
+    font-size: 2rem;
   }
   .logo_link:hover {
     cursor: pointer;
@@ -28,9 +29,9 @@ const headerStyles = css`
   .scart {
     justify-self: end;
   }
-  .hd {
+  .spruch {
     text-align: center;
-    z-index: 8;
+    font-size: 2rem;
   }
   h1 {
     margin-bottom: 0;
@@ -39,15 +40,25 @@ const headerStyles = css`
   .scartIcon:hover {
     cursor: pointer;
   }
-
-  @media (max-width: 900px) {
-    height: 5vh;
-    h1 {
+  @media (max-width: 1730px) {
+    .gridCon {
+      background-color: rgba(210, 215, 211, 1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      z-index: 10;
+    }
+    .spruch {
       display: none;
     }
   }
-  @media (max-height: 740px) {
-    height: 5vh;
+  @media (max-width: 900px) {
+    .gridCon {
+      background-color: rgba(210, 215, 211, 1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      z-index: 10;
+    }
+
     h1 {
       display: none;
     }
@@ -58,9 +69,17 @@ const foot = css`
   position: relative;
   bottom: 0;
   height: 5vh;
-
-  background-color: teal;
+  background-color: rgba(210, 215, 211, 1);
+  text-align: center;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
   width: 100%;
+  a {
+    padding: 0 10px;
+  }
+  .github {
+    border-left: 1px solid white;
+  }
 `;
 
 type LayoutProps = {
@@ -79,13 +98,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({
 
       <header css={headerStyles}>
         <div className="gridCon">
-          <div className="login">
+          <div className="logo">
             <Link href="/">
-              <a>Login</a>
+              <a>Send Bikes</a>
             </Link>
           </div>
           <Link href="/">
-            <a className="logo">Send Bikes</a>
+            <a className="spruch">
+              Send bikes, a selection of the best bikes for you to send it!
+            </a>
           </Link>
           <div className="scart">
             <Link href="/cart">
@@ -103,20 +124,19 @@ export const Layout: FunctionComponent<LayoutProps> = ({
             </Link>
           </div>
         </div>
-        <div className="hd">
+        {/* <div className="hd">
           <h1>Send bikes, a selection of the best bikes for you to send it!</h1>
-        </div>
+        </div> */}
       </header>
 
       {children}
 
       <footer css={foot}>
-        <span>Send Bikes</span>{' '}
-        <Link href="/">
-          <a>About</a>
+        <Link href="/about">
+          <a className="about">About</a>
         </Link>{' '}
-        <Link href="/">
-          <a>About</a>
+        <Link href="https://github.com/thomalexg">
+          <a className="github">GitHub</a>
         </Link>
       </footer>
     </>

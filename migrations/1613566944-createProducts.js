@@ -93,7 +93,7 @@ function stockArr() {
 const stock = stockArr();
 exports.up = async (sql) => {
   await sql`
-	INSERT INTO products ${sql(
+	INSERT INTO products ${(
     products,
     'product_id',
     'title',

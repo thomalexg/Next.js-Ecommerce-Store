@@ -18,7 +18,7 @@ const newBike = function (image: string) {
     .content {
       transition: 3s all ease-in;
       display: none;
-      // delete this
+      /* delete this */
       transition: 3s all ease-in;
       display: block;
       color: black;
@@ -86,7 +86,7 @@ const newBike = function (image: string) {
       .content {
         transition: 3s all ease-in;
         display: none;
-        // delete this
+        /* delete this */
         transition: 3s all ease-in;
         display: block;
         color: black;
@@ -118,7 +118,7 @@ const newBike = function (image: string) {
       .content {
         transition: 3s all ease-in;
         display: none;
-        // delete this
+        /* delete this */
         transition: 3s all ease-in;
         display: block;
         color: black;
@@ -134,19 +134,65 @@ const newBike = function (image: string) {
           display: block;
 
           font-weight: 90%;
-          margin: 16px 0 51px;
+          margin: 16px 0 21px;
         }
         h1 {
-          font-size: 1.7em;
+          font-size: 1.5em;
 
-          padding-top: 30px;
-          padding-bottom: 35px;
+          padding-top: 20px;
+          padding-bottom: 25px;
+        }
+        a {
+          background-color: rgba(236, 240, 241, 0.5);
+          width: 30%;
+          height: 30px;
+          line-height: 28px;
+          border-radius: 20px;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
-    }
-    @media (max-width: 450px) {
-      width: 250px;
-      height: 146.25px;
+      @media (max-width: 450px) {
+        width: 250px;
+        height: 146.25px;
+        .content {
+          transition: 3s all ease-in;
+          display: none;
+          /* delete this */
+          transition: 3s all ease-in;
+          display: block;
+          color: black;
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          background-color: rgba(232, 232, 232, 0.2);
+          border-radius: 10px;
+          text-align: center;
+          justify-content: center;
+          p {
+            color: khaki;
+            display: block;
+
+            font-weight: 90%;
+            margin: 16px 0 8px;
+          }
+          h1 {
+            font-size: 1em;
+
+            padding-top: 5px;
+            padding-bottom: 3px;
+          }
+          a {
+            background-color: rgba(236, 240, 241, 0.5);
+            width: 50%;
+            height: 30px;
+            line-height: 28px;
+            border-radius: 20px;
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+      }
     }
   `;
 };
