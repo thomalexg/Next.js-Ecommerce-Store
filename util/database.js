@@ -1,6 +1,8 @@
 import camelcaseKeys from 'camelcase-keys';
 import postgres from 'postgres';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku';
 
+setPostgresDefaultsOnHeroku();
 // Read in the values from the .env file
 // (which should be ignored in Git!)
 require('dotenv-safe').config();
@@ -11,7 +13,7 @@ function connectOneTimeToDatabase() {
   let sql;
 
   if (process.env.NODE_ENV === 'production') {
-    sql = postgres({ ssl: true });
+    sql = postgres({ ssl: false });
   } else {
     if (!globalThis.__postgresSqlClient) {
       globalThis.__postgresSqlClient = postgres();
