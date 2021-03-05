@@ -1,5 +1,3 @@
-const { maxHeaderSize } = require('http');
-
 const products = [
   {
     id: 1,
@@ -93,16 +91,16 @@ function stockArr() {
 const stock = stockArr();
 exports.up = async (sql) => {
   await sql`
-	INSERT INTO products ${
-    (products,
+	INSERT INTO products ${sql(
+    products,
     'product_id',
     'title',
     'short_description',
     'long_description',
     'img_head',
     'img_num',
-    'price')
-  };
+    'price',
+  )};
 	`;
   await sql`
   INSERT INTO product_size ${sql(sizes, 'product_id', 'size')};
