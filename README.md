@@ -1,70 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Next.js E-Commerce project Upleveled Bootcamp 2021.
 
-## Getting Started
+This store consists of a Home Page with all bikes available, a single product page, a shopping cart, a checkout page and a Thankyou page after completing the checkout.
+The data of the checkout does not get processed and is just as a placehlder to simulate the complete flow of a E-Commerce store.
 
-First, run the development server:
+# Features
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- see how many items are in the shopping cart on every page
+- select different sizes
+- stock updates after adding to cart
+- change quantity in shopping cart or delete item (you can't add more bikes than available in stock)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Technologies used
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- React and Next.js
+- PostgreSQL
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# Screenshots 
+![Screenshot_2021-04-05-11-12-49-10_3aea4af51f236e4932235fdada7d1643](https://user-images.githubusercontent.com/67371232/113559243-50395380-9601-11eb-8302-c0e3159e3c43.jpg)
+![Screenshot_2021-04-05-11-13-05-37](https://user-images.githubusercontent.com/67371232/113559251-529bad80-9601-11eb-8224-9c705db31e5c.jpg)
+![Screenshot_2021-04-05-11-13-28-63](https://user-images.githubusercontent.com/67371232/113559257-54657100-9601-11eb-9eab-0ec5a6c648ad.jpg)![Screenshot 2021-04-05 123101](https://user-images.githubusercontent.com/67371232/113559888-6d225680-9602-11eb-91f0-8359285796e2.png)
+![Screenshot 2021-04-05 123132](https://user-images.githubusercontent.com/67371232/113559941-7d3a3600-9602-11eb-8161-b7dd99a45ed4.png)
+![Screenshot 2021-04-05 123207](https://user-images.githubusercontent.com/67371232/113559985-90e59c80-9602-11eb-819b-5090ee3a87d4.png)
+![Screenshot 2021-04-05 123258](https://user-images.githubusercontent.com/67371232/113560061-afe42e80-9602-11eb-8b20-8b7f2ff21548.png)
+![Screenshot 2021-04-05 123335](https://user-images.githubusercontent.com/67371232/113560115-c5595880-9602-11eb-988e-e2f6e5c804d9.png)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-//
-import { deleteProduct } from '../cookies';
-
-const indexToDelete= 1;
-
-test('delete cookie of indexToDelete', () => {
-  const visitsCookieValue = [{id: 1, quantity: 3, size: "S}, {id: 1, quantity: 5, size: "M}];
-  const result = deleteProduct(
-    indexToDelete,
-    visitsCookieValue
-  );
-  expect(result).toEqual([{id: 1, quantity: 3, size: "S}]);
-});
-
-test('add new team member when cookie contains non-matching team member', () => {
-  const visitsCookieValue = [{ teamMemberId: 2, visits: 2 }];
-  const result = incrementVisitsByTeamMember(
-    visitsCookieValue,
-    teamMemberIdToAdd,
-  );
-  expect(result).toEqual([
-    ...visitsCookieValue,
-    { teamMemberId: teamMemberIdToAdd, visits: 1 },
-  ]);
-});
-
-test('increment team member visits when cookie contains matching team member', () => {
-  const visitsCookieValue = [{ teamMemberId: teamMemberIdToAdd, visits: 2 }];
-  const result = incrementVisitsByTeamMember(
-    visitsCookieValue,
-    teamMemberIdToAdd,
-  );
-  expect(result).toEqual([{ teamMemberId: teamMemberIdToAdd, visits: 3 }]);
-});
+![Screenshot_2021-04-05-11-13-48-98](https://user-images.githubusercontent.com/67371232/113559214-47488200-9601-11eb-8fed-f91cf959808d.jpg)
