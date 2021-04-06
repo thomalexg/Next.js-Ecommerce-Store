@@ -13,7 +13,7 @@ The data of the checkout does not get processed and is just as a placehlder to s
 
 # Technologies used
 
-- React and Next.js
+- Next.js
 - PostgreSQL
 
 # Screenshots 
