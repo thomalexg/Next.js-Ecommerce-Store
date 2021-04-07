@@ -1,4 +1,4 @@
-Next.js E-Commerce project UpLeveled Bootcamp 2021. Visit it on (send-bikes.herokuapp.com/)
+Next.js E-Commerce project UpLeveled Bootcamp 2021. Visit it on !(send-bikes.herokuapp.com/)
 
 This store consists of a Home Page with all bikes available, a single product page, a shopping cart, a checkout page and a Thankyou page after completing the checkout.
 The data of the checkout does not get processed and is just as a placehlder to simulate the complete flow of a E-Commerce store.
